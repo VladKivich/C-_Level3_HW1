@@ -27,6 +27,12 @@ namespace WPF_MailSender
             }
         }
 
+        /// <summary>
+        /// Метод проверки пустых полей имени пользователя и пароля.
+        /// </summary>
+        /// <param name="User"></param>
+        /// <param name="Pass"></param>
+        /// <returns></returns>
         private bool EmptyFields(bool User, bool Pass)
         {
             if(User | Pass)
