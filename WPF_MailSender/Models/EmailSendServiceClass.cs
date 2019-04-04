@@ -16,11 +16,11 @@ namespace WPF_MailSender
 
         public MailMessage Message { get; private set; }
         
-        public EmailSendServiceClass(NetworkCredential ID)
+        public EmailSendServiceClass(NetworkCredential ID, string Host, int Port)
         {
-            //SMTP = new SmtpClient(StaticVariables.Host, StaticVariables.Port);
-            //SMTP.Credentials = ID;
-            //SMTP.EnableSsl = true;
+            SMTP = new SmtpClient(Host, Port);
+            SMTP.Credentials = ID;
+            SMTP.EnableSsl = true;
         }
 
         public void SendMessage(string From, string To, string MessageText, string MessageSubject, Window MainWindow)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -82,12 +83,10 @@ namespace WPF_MailSender
         {
             if (T == typeof(Recepient))
             {
-                EditorName.IsEnabled = false;
-                EditorPort.IsEnabled = false;
-                EditorSMTP.IsEnabled = false;
                 TextName.IsEnabled = false;
                 TextPort.IsEnabled = false;
                 TextSMTP.IsEnabled = false;
+                TextPassword.IsEnabled = false;
                 TextEmail.Focus();
             }
         }
@@ -137,7 +136,7 @@ namespace WPF_MailSender
                 }
                 else
                 {
-                    Collection.Add(new Sender(TextName.Text, TextEmail.Text.ToLower(), TextSMTP.Text.ToLower(), Convert.ToInt32(TextPort.Text)));
+                    Collection.Add(new Sender(TextName.Text, TextEmail.Text.ToLower(), TextSMTP.Text.ToLower(), Convert.ToInt32(TextPort.Text), TextPassword.SecurePassword));
                     this.Close();
                 }
             }
@@ -166,7 +165,7 @@ namespace WPF_MailSender
                 }
                 else
                 {
-                    Collection[Collection.IndexOf(EditObject)] = (EditObject as ISender).SetParameters(TextName.Text, TextEmail.Text, TextSMTP.Text, Convert.ToInt32(TextPort.Text));
+                    Collection[Collection.IndexOf(EditObject)] = (EditObject as ISender).SetParameters(TextName.Text, TextEmail.Text, TextSMTP.Text, Convert.ToInt32(TextPort.Text), TextPassword.SecurePassword);
                     this.Close();
                 }
             }

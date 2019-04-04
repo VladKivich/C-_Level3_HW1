@@ -94,7 +94,7 @@
                     <Label Content="Your Message" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="136" Height="34" FontSize="16" Background="#00000000"/>
                     <TextBox x:Name="MessageBody" LostFocus="MessageBody_LostFocus" HorizontalAlignment="Left" Height="151" Margin="232,79,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
                     <TextBox x:Name="WatermarkBody" Text="Email Text" Foreground="Gray" GotFocus="WatermarkBody_GotFocus" HorizontalAlignment="Left" Height="151" Margin="232,79,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
-                    <Button Content="Send" Margin="322,274,356,36" Click="Button_Click"/>
+                    <Button Content="Send Now" Margin="322,274,356,36" Click="Button_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Scheduler">

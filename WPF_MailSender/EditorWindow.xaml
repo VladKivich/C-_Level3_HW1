@@ -16,18 +16,20 @@
             <ColumnDefinition Width="70*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0">
-            <Label Name="EditorName" HorizontalAlignment="Left" Content="Name" Width="50" Height="20" VerticalAlignment="Top" Margin="25,20"></Label>
-            <Label Name="EditorEmail" HorizontalAlignment="Left" Content="Email" Width="50" Height="20" VerticalAlignment="Top" Margin="25,20"></Label>
-            <Label Name="EditorSMTP" HorizontalAlignment="Left" Content="SMTP" Width="50" Height="20" VerticalAlignment="Top" Margin="25,20"></Label>
-            <Label Name="EditorPort" HorizontalAlignment="Left" Content="Port" Width="50" Height="20" VerticalAlignment="Top" Margin="25,20"></Label>
+            <Label Name="EditorName" HorizontalAlignment="Left" Content="Name" Width="50" Height="20" VerticalAlignment="Top" Margin="15,15"></Label>
+            <Label Name="EditorEmail" HorizontalAlignment="Left" Content="Email" Width="50" Height="20" VerticalAlignment="Top" Margin="15,15"></Label>
+            <Label Name="EditorSMTP" HorizontalAlignment="Left" Content="SMTP" Width="50" Height="20" VerticalAlignment="Top" Margin="15,15"></Label>
+            <Label Name="EditorPort" HorizontalAlignment="Left" Content="Port" Width="50" Height="20" VerticalAlignment="Top" Margin="15,15"></Label>
+            <Label Name="EditorPassword" HorizontalAlignment="Left" Content="Password" Width="50" Height="20" VerticalAlignment="Top" Margin="15,5"></Label>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <TextBox Name="TextName" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="35" VerticalAlignment="Top" Margin="25,10"></TextBox>
-            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="35" VerticalAlignment="Top" Margin="25,15"></TextBox>
-            <TextBox Name="TextSMTP" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="35" VerticalAlignment="Top" Margin="25,10"></TextBox>
-            <TextBox Name="TextPort" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="35" VerticalAlignment="Top" Margin="25,15" TextChanged="TextPort_TextChanged"></TextBox>
+            <TextBox Name="TextName" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
+            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
+            <TextBox Name="TextSMTP" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
+            <TextBox Name="TextPort" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10" TextChanged="TextPort_TextChanged"></TextBox>
+            <PasswordBox Name="TextPassword" HorizontalAlignment="Right" Width="150" BorderBrush="Red" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,0" />
         </StackPanel>
-        <Button Name="ActionButton" Grid.Column="1" Grid.Row="1" Height="50" Width="70" HorizontalAlignment="Left" Margin="20,10" FontSize="18" Click="Button_Click_Ok"/>
+        <Button Name="ActionButton" Grid.Column="1" Grid.Row="1" Height="50" Width="70" HorizontalAlignment="Left" Margin="20,10"  FontSize="18" Click="Button_Click_Ok"/>
         <Button Grid.Column="1" Grid.Row="1" Height="50" Width="70" HorizontalAlignment="Right" Margin="20,10" Content="Exit" FontSize="18" Click="Button_Click_Exit"/>
         <Grid.Resources>
             <ResourceDictionary>

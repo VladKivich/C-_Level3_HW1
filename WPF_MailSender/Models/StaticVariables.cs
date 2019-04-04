@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,8 +24,9 @@ namespace WPF_MailSender
         string Name { get; set; }
         string Server { get; set; }
         int Port { get; set; }
+        SecureString Password { set; }
 
-        Sender SetParameters(string Name, string Email, string Server, int Port);
+        Sender SetParameters(string Name, string Email, string Server, int Port, SecureString Password);
     }
 
     public class Sender: IEmail, ISender
@@ -33,18 +35,20 @@ namespace WPF_MailSender
         public string Email { get; set; }
         public string Server { get; set; }
         public int Port { get; set; }
+        public SecureString Password { get; set; }
 
-        public Sender(string Name, string Email, string Server, int Port)
+        public Sender(string Name, string Email, string Server, int Port, SecureString Password)
         {
             this.Name = Name;
             this.Email = Email;
             this.Server = Server;
             this.Port = Port;
+            this.Password = Password;
         }
 
-        public Sender SetParameters(string Name, string Email, string Server, int Port)
+        public Sender SetParameters(string Name, string Email, string Server, int Port, SecureString Password)
         {
-            return new Sender(Name, Email, Server, Port);
+            return new Sender(Name, Email, Server, Port, Password);
         }
 
         public Recepient SetParameters(string Email)
@@ -75,8 +79,6 @@ namespace WPF_MailSender
 
     static class StaticVariables
     {
-        public static string MailSender { get; set; } = "smasoda@yandex.ru"; //123456qwert
-        
         public static UserMessageWindow GetNewMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility Exit = Visibility.Visible)
         {
             return UserMessageWindow.GetMessageWindow(Owner, EmailTitle, EmailText, Brush, Exit);

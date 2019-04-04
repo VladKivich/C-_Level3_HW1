@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections;
+using System.Security;
 
 namespace WPF_MailSender
 {
@@ -23,12 +24,10 @@ namespace WPF_MailSender
             InitializeComponent();
 
             this.Title = "WPF Mail Sender";
-
+            
             SendersListBase = new ObservableCollection<Sender>
             {
-                new Sender("A", StaticVariables.MailSender, "smtp.yandex.ru", 25),
-                new Sender("B", StaticVariables.MailSender, "smtp.yandex.ru", 25),
-                new Sender("C", StaticVariables.MailSender, "smtp.yandex.ru", 25),
+                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new SecureString())
             };
 
             RecepientsList = new ObservableCollection<Recepient>
@@ -47,26 +46,30 @@ namespace WPF_MailSender
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //if (EmptyFields(String.IsNullOrEmpty(UserNameTextBox.Text), String.IsNullOrEmpty(PasswordBoxEditor.Password)))
-            //{
-            //    EmailSendServiceClass ESSC = new EmailSendServiceClass(new NetworkCredential(UserNameTextBox.Text, PasswordBoxEditor.SecurePassword));
+            if (SendersUser.HasItems & RecepientsUser.HasItems)
+            {
+                if(EmptyFields(String.IsNullOrEmpty(MessageBody.Text), String.IsNullOrEmpty(MessageSubject.Text)))
+                {
+                    foreach (Sender S in SendersUser.Items)
+                    {
+                        foreach (Recepient R in RecepientsUser.Items)
+                        {
+                            EmailSendServiceClass ESSC = new EmailSendServiceClass(new NetworkCredential(S.Email, S.Password), S.Server, S.Port);
 
-            //    ESSC.SendMessage(StaticVariables.MailSender, StaticVariables.MailReceiver, MessageBody.Text, MessageSubject.Text, this);
-            //}
+                            ESSC.SendMessage(S.Email, R.Email, MessageBody.Text, MessageSubject.Text, this);
+                        }
+                    }
+                }
+            }
         }
         
-        /// <summary>
-        /// Метод проверки пустых полей имени пользователя и пароля.
-        /// </summary>
-        /// <param name="User"></param>
-        /// <param name="Pass"></param>
-        /// <returns></returns>
-        private bool EmptyFields(bool User, bool Pass)
+
+        private bool EmptyFields(bool Subject, bool Message)
         {
-            if(User | Pass)
+            if(Subject | Message)
             {
                 string Title = "Input Error";
-                string Text = "Fields Username and/or Password is empty. Enter your username and password";
+                string Text = "Your message is empty!";
                 StaticVariables.GetNewMessageWindow(this, Title, Text, Brushes.OrangeRed).ShowDialog();
                 return false;
             }
