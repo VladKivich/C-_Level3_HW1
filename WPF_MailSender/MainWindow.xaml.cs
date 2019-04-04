@@ -61,6 +61,12 @@ namespace WPF_MailSender
                     }
                 }
             }
+            else
+            {
+                string Title = "No Sender/Recepient";
+                string Text = "Select sender and / or recipient";
+                StaticVariables.GetNewMessageWindow(this, Title, Text, Brushes.OrangeRed).ShowDialog();
+            }
         }
         
 
@@ -216,7 +222,5 @@ namespace WPF_MailSender
         }
 
         #endregion
-
-
     }
 }

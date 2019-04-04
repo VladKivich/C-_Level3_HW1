@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_MailSender"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="WPF_MailSender.MainWindow"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="WPF Mail Sender" Height="450" Width="800" ResizeMode="NoResize">
     <DockPanel >
@@ -83,24 +84,52 @@
                     <Button Name ="EditRecepient" Grid.Column="2" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" Margin="0,14,20,14" Click="EditRecepient_Click">
                         <Image Source="Img/Edit.png"></Image>
                     </Button>
-
                 </Grid>
             </TabItem>
             <TabItem Header="Message">
-                <Grid Height="353" Width="789">
-                    <Rectangle Fill="#FF3E3E46" HorizontalAlignment="Left" Height="197" Margin="218,44,0,0" Stroke="Black" VerticalAlignment="Top" Width="332"/>
-                    <TextBox x:Name="MessageSubject" LostFocus="MessageSubject_LostFocus" HorizontalAlignment="Left" Height="23" Margin="232,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305"/>
-                    <TextBox x:Name="WatermarkSubject" Text="Email Subject" Foreground="Gray" GotFocus="WatermarkSubject_GotFocus" HorizontalAlignment="Left" Height="23" Margin="232,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" IsReadOnly="True"/>
-                    <Label Content="Your Message" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="136" Height="34" FontSize="16" Background="#00000000"/>
-                    <TextBox x:Name="MessageBody" LostFocus="MessageBody_LostFocus" HorizontalAlignment="Left" Height="151" Margin="232,79,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
-                    <TextBox x:Name="WatermarkBody" Text="Email Text" Foreground="Gray" GotFocus="WatermarkBody_GotFocus" HorizontalAlignment="Left" Height="151" Margin="232,79,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
-                    <Button Content="Send Now" Margin="322,274,356,36" Click="Button_Click"/>
-                </Grid>
+                <DockPanel Width="790" Height="350" LastChildFill="false">
+                    <GroupBox DockPanel.Dock="Left" Width="200" Header="Message List">
+                        <ListBox>
+                            <ListBoxItem >Message_1</ListBoxItem>
+                            <ListBoxItem >Message_1</ListBoxItem>
+                            <ListBoxItem >Message_1</ListBoxItem>
+                            <ListBoxItem >Message_1</ListBoxItem>
+                        </ListBox>
+                    </GroupBox>
+                    <Grid DockPanel.Dock="Top">
+                        <Label Content="Your Message" VerticalAlignment="Top" Width="135" Height="34" FontSize="16" HorizontalContentAlignment="Center" Background="#00000000"/>
+                        <TextBox Name="MessageSubject" LostFocus="MessageSubject_LostFocus" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Margin="0,30,0,0"/>
+                        <TextBox Name="WatermarkSubject" Text="Email Subject" Foreground="Gray" GotFocus="WatermarkSubject_GotFocus" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" IsReadOnly="True" Margin="0,30,0,0"/>
+                        
+                        <TextBox Name="MessageBody" LostFocus="MessageBody_LostFocus" HorizontalAlignment="Center" Height="151" Margin="0,100,0,50" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
+                        <TextBox Name="WatermarkBody" Text="Email Text" Foreground="Gray" GotFocus="WatermarkBody_GotFocus" HorizontalAlignment="Center" Height="151" Margin="0,100,0,50" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
+                    </Grid>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Scheduler">
-                <Calendar />
+                <Grid Height="350" Width="790" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"></ColumnDefinition>
+                        <ColumnDefinition Width="75*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="15,10" Height="Auto">
+                        <Label Content="Date" HorizontalContentAlignment="Center"></Label>
+                        <Calendar></Calendar>
+                        <Label Content="Time" HorizontalContentAlignment="Center" Margin="0,0,0,15"></Label>
+                        <wpfTool:TimePicker></wpfTool:TimePicker>
+                        <Button Content="Send Now" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10" Width="120" Click="Button_Click"/>
+                        <Button Content="Add Scheduler Task" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10" Width="120" Click="Button_Click"/>
+                    </StackPanel>
+                    <GroupBox Grid.Column="1" Margin="0,0,5,5" Header="Scheduler Tasks">
+                        <ListBox Margin="0,10,0,0">
+                            <ListBoxItem>Task_1</ListBoxItem>
+                            <ListBoxItem>Task_2</ListBoxItem>
+                            <ListBoxItem>Task_3</ListBoxItem>
+                        </ListBox>
+                    </GroupBox>
+                    
+                </Grid>
             </TabItem>
-
         </TabControl>
     </DockPanel>
 </Window>
