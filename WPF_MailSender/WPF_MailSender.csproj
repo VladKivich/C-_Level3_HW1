@@ -57,6 +57,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\EmailSendServiceClass.cs" />
     <Compile Include="Models\StaticVariables.cs" />
+    <Compile Include="EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
@@ -75,6 +78,10 @@
     <Page Include="MessageTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,6 +118,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Img\Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\clock.png" />
+    <Resource Include="Img\delete.png" />
+    <Resource Include="Img\edit.png" />
+    <Resource Include="Img\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\New.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

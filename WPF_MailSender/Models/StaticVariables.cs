@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,24 +11,85 @@ using System.Windows.Media;
 
 namespace WPF_MailSender
 {
-    static class StaticVariables
+    public interface IEmail
     {
-        public static readonly string Host = "smtp.yandex.ru";
+        string Email { get; set; }
 
-        public static readonly string MessageSubject = "Some title";
+        Recepient SetParameters(string Email);
+    }
 
-        public static readonly string MessageBody = "Some text";
+    public interface ISender
+    {
+        string Name { get; set; }
+        string Server { get; set; }
+        int Port { get; set; }
 
-        public static string MailSender { get; set; } = "smasoda@yandex.ru"; //123456qwert
+        Sender SetParameters(string Name, string Email, string Server, int Port);
+    }
 
-        public static string MailReceiver { get; set; } = "vladkivich@gmail.com";
+    public class Sender: IEmail, ISender
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Server { get; set; }
+        public int Port { get; set; }
 
-        public static readonly int Port = 25;
-        
-        public static UserMessageWindow GetNewMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush)
+        public Sender(string Name, string Email, string Server, int Port)
         {
-            return UserMessageWindow.GetMessageWindow(Owner, EmailTitle, EmailText, Brush);
+            this.Name = Name;
+            this.Email = Email;
+            this.Server = Server;
+            this.Port = Port;
         }
 
+        public Sender SetParameters(string Name, string Email, string Server, int Port)
+        {
+            return new Sender(Name, Email, Server, Port);
+        }
+
+        public Recepient SetParameters(string Email)
+        {
+            return new Recepient(Email);
+        }
+    }
+
+    public class Recepient: IEmail
+    {
+        public string Email { get; set; }
+        
+        public Recepient(string Email)
+        {
+            this.Email = Email;
+        }
+
+        public override string ToString()
+        {
+            return String.Format(Email.ToString());
+        }
+
+        public Recepient SetParameters(string Email)
+        {
+            return new Recepient(Email);
+        }
+    }
+
+    static class StaticVariables
+    {
+        public static string MailSender { get; set; } = "smasoda@yandex.ru"; //123456qwert
+        
+        public static UserMessageWindow GetNewMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility Exit = Visibility.Visible)
+        {
+            return UserMessageWindow.GetMessageWindow(Owner, EmailTitle, EmailText, Brush, Exit);
+        }
+
+        public static EditorWindow GetNewEditorWindow(Window Owner, IList List, Type T, string Title)
+        {
+            return EditorWindow.GetEditorWindow(Owner, List, T, Title);
+        }
+
+        public static EditorWindow GetNewEditorWindow(Window Owner, IList List, IEmail New, string Title)
+        {
+            return EditorWindow.GetEditorWindow(Owner, List, New, Title);
+        }
     }
 }
