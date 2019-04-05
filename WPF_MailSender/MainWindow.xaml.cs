@@ -36,7 +36,7 @@ namespace WPF_MailSender
             };
 
             SendersBase.ItemsSource = SendersListBase;
-            RecepientsBase.ItemsSource = RecepientsList;
+            //RecepientsBase.ItemsSource = RecepientsList; --Подключаемся к базе данных.
         }
 
         public void CollectionUpdate(IList Collect)
