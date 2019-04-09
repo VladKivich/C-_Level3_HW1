@@ -23,8 +23,6 @@ namespace WPF_MailSender
         {
             InitializeComponent();
 
-            this.Title = "WPF Mail Sender";
-            
             SendersListBase = new ObservableCollection<Sender>
             {
                 new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new SecureString())
@@ -36,7 +34,6 @@ namespace WPF_MailSender
             };
 
             SendersBase.ItemsSource = SendersListBase;
-            //RecepientsBase.ItemsSource = RecepientsList; --Подключаемся к базе данных.
         }
 
         public void CollectionUpdate(IList Collect)

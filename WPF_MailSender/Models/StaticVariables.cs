@@ -59,8 +59,22 @@ namespace WPF_MailSender
 
     public class Recepient: IEmail
     {
+        public int ID { get; private set; }
+
         public string Email { get; set; }
-        
+
+        public Recepient(int ID, string Email)
+        {
+            this.ID = ID;
+            this.Email = Email;
+        }
+
+        public Recepient()
+        {
+            ID = 0;
+            Email = "Unknown";
+        }
+
         public Recepient(string Email)
         {
             this.Email = Email;

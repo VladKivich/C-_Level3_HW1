@@ -1,34 +1,32 @@
 using GalaSoft.MvvmLight;
+using System.Collections.ObjectModel;
+using WPF_MailSender.Interfaces;
 
 namespace WPF_MailSender.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
+        public ObservableCollection<Recepient> RecepientsList { get; } = new ObservableCollection<Recepient>();
+
+        private readonly IRecepients RecepientsData;
+
+        public MainViewModel(IRecepients RecepientsData)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            this.RecepientsData = RecepientsData;
+            foreach (var item in RecepientsData.GetAllRecepients())
+            {
+                RecepientsList.Add(item);
+            }
         }
+
+        public string _Title = "WPF Mail Sender";
+
+        public string Title
+        {
+            get { return _Title; }
+            set { Set(ref _Title, value); }
+        }
+
+        
     }
 }
