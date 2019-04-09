@@ -69,7 +69,6 @@ namespace WPF_MailSender
             }
         }
         
-
         private bool EmptyFields(bool Subject, bool Message)
         {
             if(Subject | Message)
