@@ -11,5 +11,7 @@ namespace WPF_MailSender.Interfaces
         IEnumerable<Recepient> GetAllRecepients();
 
         Recepient GotRecepientById(int id);
+
+        void Edit(Recepient recepient);
     }
 }

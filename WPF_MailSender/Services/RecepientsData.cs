@@ -16,7 +16,7 @@ namespace WPF_MailSender.Services
         {
             this.Context = Context;
         }
-
+        
         public IEnumerable<Recepient> GetAllRecepients()
         {
             var Recepients = from r in Context.Recepient
@@ -34,6 +34,26 @@ namespace WPF_MailSender.Services
                 return new Recepient(Recepient.Id, Recepient.Email);
             }
             return new Recepient();
+        }
+
+        public void Edit(Recepient recepient)
+        {
+            var db_recepient = Context.Recepient.FirstOrDefault(r => r.Id == recepient.ID);
+            if (db_recepient == null) return;
+
+            db_recepient.Email = recepient.Email;
+
+            Context.SubmitChanges();
+        }
+
+        public void AddNew(string email)
+        {
+            Data.Recepient R = new Data.Recepient
+            {
+                Email = email
+            };
+            Context.Recepient.InsertOnSubmit(R);
+            Context.SubmitChanges();
         }
     }
 }

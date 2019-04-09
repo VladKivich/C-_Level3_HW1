@@ -15,30 +15,11 @@ namespace WPF_MailSender
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ObservableCollection<Recepient> RecepientsList;
-
-        public ObservableCollection<Sender> SendersListBase;
-
         public MainWindow()
         {
             InitializeComponent();
 
-            SendersListBase = new ObservableCollection<Sender>
-            {
-                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new SecureString())
-            };
-
-            RecepientsList = new ObservableCollection<Recepient>
-            {
-                new Recepient("vladkivich@gmail.com")
-            };
-
-            SendersBase.ItemsSource = SendersListBase;
-        }
-
-        public void CollectionUpdate(IList Collect)
-        {
-            SendersBase.ItemsSource = Collect;
+            StaticVariables.SetMainWindow(this);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -51,7 +32,7 @@ namespace WPF_MailSender
                     {
                         foreach (Recepient R in RecepientsUser.Items)
                         {
-                            EmailSendServiceClass ESSC = new EmailSendServiceClass(new NetworkCredential(S.Email, S.Password), S.Server, S.Port);
+                            EmailSendServiceClass ESSC = new EmailSendServiceClass(S.ID, S.Server, S.Port);
 
                             ESSC.SendMessage(S.Email, R.Email, MessageBody.Text, MessageSubject.Text, this);
                         }
@@ -77,7 +58,7 @@ namespace WPF_MailSender
             }
             return true;
         }
-
+        
         #region Watermarks
 
         private void WatermarkSubject_GotFocus(object sender, RoutedEventArgs e)
@@ -169,12 +150,12 @@ namespace WPF_MailSender
 
         private void NewSender_Click(object sender, RoutedEventArgs e)
         {
-            StaticVariables.GetNewEditorWindow(this, SendersListBase, typeof(Sender), "Create New Sender");
+            //StaticVariables.GetNewEditorWindow(this, SendersListBase, typeof(Sender), "Create New Sender");
         }
 
         private void NewRecepient_Click(object sender, RoutedEventArgs e)
         {
-            StaticVariables.GetNewEditorWindow(this, RecepientsList, typeof(Recepient), "Create New Recepient");
+            //StaticVariables.GetNewEditorWindow(this, RecepientsList, typeof(Recepient), "Create New Recepient");
         }
 
         #endregion
@@ -188,7 +169,7 @@ namespace WPF_MailSender
                 StaticVariables.GetNewMessageWindow(this, "Select Error", "Please select Sender from Sender Selection List", Brushes.OrangeRed, Visibility.Visible).ShowDialog();
                 return;
             }
-            StaticVariables.GetNewEditorWindow(this, SendersListBase, SendersBase.SelectedItem as IEmail, "Edit Sender");
+            //StaticVariables.GetNewEditorWindow(this, SendersListBase, SendersBase.SelectedItem as IEmail, "Edit Sender");
         }
 
         private void EditRecepient_Click(object sender, RoutedEventArgs e)
@@ -198,7 +179,7 @@ namespace WPF_MailSender
                 StaticVariables.GetNewMessageWindow(this, "Select Error", "Please select Recepient from Recepient Selection List", Brushes.OrangeRed, Visibility.Visible).ShowDialog();
                 return;
             }
-            StaticVariables.GetNewEditorWindow(this, RecepientsList, RecepientsBase.SelectedItem as IEmail, "Edit Sender");
+            //StaticVariables.GetNewEditorWindow(this, RecepientsList, RecepientsBase.SelectedItem as IEmail, "Edit Sender");
         }
 
         #endregion
@@ -207,14 +188,14 @@ namespace WPF_MailSender
 
         private void DeleteSender_Click(object sender, RoutedEventArgs e)
         {
-            if (SendersBase.SelectedItems.Count == 0) return;
-            SendersListBase.Remove((Sender)SendersBase.SelectedItem);
+            //if (SendersBase.SelectedItems.Count == 0) return;
+            //SendersListBase.Remove((Sender)SendersBase.SelectedItem);
         }
 
         private void DeleteRecepient_Click(object sender, RoutedEventArgs e)
         {
-            if (RecepientsBase.SelectedItems.Count == 0) return;
-            RecepientsList.Remove((Recepient)RecepientsBase.SelectedItem);
+            //if (RecepientsBase.SelectedItems.Count == 0) return;
+            //RecepientsList.Remove((Recepient)RecepientsBase.SelectedItem);
         }
 
         #endregion

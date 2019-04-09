@@ -89,6 +89,7 @@
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\EditorWindowViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

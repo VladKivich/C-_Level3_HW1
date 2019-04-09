@@ -34,16 +34,13 @@ namespace WPF_MailSender.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<IRecepients, RecepientsData>();
             SimpleIoc.Default.Register(() => new MailSenderDBDataContext());
+            SimpleIoc.Default.Register<EditorWindowViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        public EditorWindowViewModel Editor => ServiceLocator.Current.GetInstance<EditorWindowViewModel>();
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
