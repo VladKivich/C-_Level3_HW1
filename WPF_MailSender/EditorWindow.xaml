@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_MailSender"
+        xmlns:vm="clr-namespace:WPF_MailSender.ViewModel"
+        WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        DataContext="{Binding Editor, Source={StaticResource Locator}}"
+        d:DataContext="{d:DesignInstance vm:EditorWindowMode}"
         Title="{Binding Title}" Height="350" Width="300">
     <Grid>
         <Grid.RowDefinitions>
@@ -24,14 +26,14 @@
             <Label x:Name="EditorPassword" HorizontalAlignment="Left" Content="Password" Width="60" Height="25" VerticalAlignment="Top" Margin="15,10,0,0"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
-            <TextBox Name="TextName" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
-            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
-            <TextBox Name="TextSMTP" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
-            <TextBox Name="TextPort" HorizontalAlignment="Right" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,5" TextChanged="TextPort_TextChanged"></TextBox>
-            <PasswordBox Name="TextPassword" HorizontalAlignment="Right" Width="150" BorderBrush="Red" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,7" />
+            <TextBox Name="TextName" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Name}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
+            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" Text="{Binding EmailAddress}" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
+            <TextBox Name="TextSMTP" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding SMTP}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
+            <TextBox Name="TextPort" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Port}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,5"></TextBox>
+            <PasswordBox Name="TextPassword" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Width="150" BorderBrush="Red" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,7" />
         </StackPanel>
-        <Button Command="{Binding SaveRecepinetChange}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Name="ActionButton" Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Left" Margin="20,10"  FontSize="18"/>
-        <Button Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Right" Margin="20,10" Content="Exit" FontSize="18" Click="Button_Click_Exit"/>
+        <Button Command="{Binding SaveChanges}" Content="{Binding ActionButtonContent}" Name="ActionButton" Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Left" Margin="20,10"  FontSize="18"/>
+        <Button Command="{Binding Exit}" Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Right" Margin="20,10" Content="Exit" FontSize="18"/>
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

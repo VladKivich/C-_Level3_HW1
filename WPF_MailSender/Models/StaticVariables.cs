@@ -32,6 +32,15 @@ namespace WPF_MailSender
             this.Port = Port;
             this.ID = ID;
         }
+
+        public Sender()
+        {
+            Name = "Unknown";
+            Email = "Unknown";
+            Server = "Unknown";
+            this.Port = 0;
+            this.ID = new NetworkCredential(Email, "password");
+        }
     }
 
     public class Recepient
@@ -70,43 +79,9 @@ namespace WPF_MailSender
 
     static class StaticVariables
     {
-        ///Переписать!
-        private static Window MainWin;
-
-        public static void SetMainWindow(Window Win)
-        {
-            if(MainWin == null)
-            {
-                MainWin = Win;
-            }
-        }
-
-        public static Window GetMainWindow
-        {
-            get
-            {
-                return MainWin;
-            }
-        }
-
-        public static ObservableCollection<Sender> SendersList { get; } = new ObservableCollection<Sender>()
-        {
-            new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new NetworkCredential("smasoda@yandex.ru", "123456qwert"))
-        };
-
         public static UserMessageWindow GetNewMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility Exit = Visibility.Visible)
         {
             return UserMessageWindow.GetMessageWindow(Owner, EmailTitle, EmailText, Brush, Exit);
-        }
-
-        public static EditorWindow GetNewEditorWindow(Window Owner, string Title, EditorWindowShowMode Mode, Sender sender)
-        {
-            return EditorWindow.GetNewWindow(Owner, Title, Mode, sender);
-        }
-
-        public static EditorWindow GetNewEditorWindow(Window Owner, string Title, EditorWindowShowMode Mode, Recepient recepient)
-        {
-            return EditorWindow.GetNewWindow(Owner, Title, Mode, recepient);
         }
     }
 }

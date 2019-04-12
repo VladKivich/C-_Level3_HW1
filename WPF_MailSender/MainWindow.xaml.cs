@@ -18,8 +18,6 @@ namespace WPF_MailSender
         public MainWindow()
         {
             InitializeComponent();
-
-            StaticVariables.SetMainWindow(this);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

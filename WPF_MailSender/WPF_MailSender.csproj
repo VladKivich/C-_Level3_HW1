@@ -85,7 +85,8 @@
     <Compile Include="EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\RecepientsData.cs" />
+    <Compile Include="Services\CorrespondentsData.cs" />
+    <Compile Include="Services\WindowManager.cs" />
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>

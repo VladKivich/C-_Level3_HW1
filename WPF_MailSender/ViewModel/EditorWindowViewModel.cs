@@ -11,6 +11,12 @@ using WPF_MailSender.Interfaces;
 
 namespace WPF_MailSender.ViewModel
 {
+    public enum EditorWindowMode
+    {
+        Sender,
+        Recepient
+    }
+
     public class EditorWindowViewModel: ViewModelBase
     {
         #region Заголовок окна редактора
@@ -25,38 +31,129 @@ namespace WPF_MailSender.ViewModel
 
         #endregion
 
-        public Sender Sender { get; set; }
+        #region Кнопка действия в окне редактора
 
-        public Recepient Recepient { get; set; }
+        public string _ActionButtonContent = "";
 
-        private EditorWindow EW;
-
-        public ICommand SaveRecepinetChange { get; }
-
-        private readonly IRecepients RecepientsData;
-
-        public EditorWindowViewModel(IRecepients RecepientsData)
+        public string ActionButtonContent
         {
-            this.RecepientsData = RecepientsData;
-
-            SaveRecepinetChange = new RelayCommand<EditorWindow>(ActionButton);
+            get { return _ActionButtonContent; }
+            set { Set(ref _ActionButtonContent, value); }
         }
 
-        private void ActionButton(EditorWindow EW)
-        {
-            this.EW = EW;
+        #endregion
 
-            if(EW.Mode == EditorWindow.EditorWindowShowMode.EditMode && EW.CurrentObject is Recepient)
+        #region Команды
+
+        public ICommand SaveChanges { get; }
+
+        public ICommand Exit { get; }
+
+        #endregion
+
+        #region Поля\Свойства
+
+        private string _Name;
+
+        public virtual string Name
+        {
+            get => _Name;
+            set => Set(ref _Name, value);
+        }
+
+        private string _EmailAddress;
+
+        public virtual string EmailAddress
+        {
+            get => _EmailAddress;
+            set => Set(ref _EmailAddress, value);
+        }
+
+        private string _SMTP;
+
+        public virtual string SMTP
+        {
+            get => _SMTP;
+            set => Set(ref _SMTP, value);
+        }
+
+        private int _Port;
+
+        public virtual int Port
+        {
+            get => _Port;
+            set => Set(ref _Port, value);
+        }
+
+        private string _Password;
+
+        public virtual string Password
+        {
+            get => _Password;
+            set => Set(ref _Password, value);
+        }
+
+        #endregion
+        
+        #region События\Делегаты
+
+        public event EventDelegate<bool> Closed;
+
+        public delegate void EventDelegate<T>(object sender, T arg);
+
+        #endregion
+        
+        public bool AllFields { get; private set; }
+
+        private readonly EditorWindowMode Mode;
+
+        public EditorWindowViewModel(string Title, string ActionButton, EditorWindowMode Mode)
+        {
+            _Title = Title;
+
+            _ActionButtonContent = ActionButton;
+
+            this.Mode = Mode;
+
+            AllFields = (this.Mode == EditorWindowMode.Recepient ? false : true );
+
+            SaveChanges = new RelayCommand(ChangeButton);
+
+            Exit = new RelayCommand(ExitButton);
+        }
+
+        public void SendRecepient(Recepient R)
+        {
+            if(R is null)
             {
-                Recepient R = EW.CurrentObject as Recepient;
-                R.Email = EW.TextEmail.Text;
-                SomeAction(R);
+                R = new Recepient();
             }
+
+            EmailAddress = R.Email;
         }
 
-        private void SomeAction(Recepient Recepient)
+        public void SendSender(Sender S)
         {
-            RecepientsData.Edit(Recepient);
+            if (S is null)
+            {
+                S = new Sender();
+            }
+
+            Name = S.Name;
+            EmailAddress = S.Email;
+            SMTP = S.Server;
+            Port = S.Port;
+            Password = S.ID.Password;
+        }
+
+        private void ChangeButton()
+        {
+            Closed?.Invoke(this, true);
+        }
+
+        private void ExitButton()
+        {
+            Closed?.Invoke(this, false);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Windows.Input;
 using WPF_MailSender.Interfaces;
+using WPF_MailSender.Services;
 
 namespace WPF_MailSender.ViewModel
 {
@@ -12,6 +13,8 @@ namespace WPF_MailSender.ViewModel
         public ObservableCollection<Recepient> RecepientsList { get; } = new ObservableCollection<Recepient>();
 
         public ObservableCollection<Sender> SendersList { get; } = new ObservableCollection<Sender>();
+
+        private WindowManager WM;
 
         private readonly IRecepients RecepientsData;
 
@@ -23,9 +26,12 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand EditRecepientCommand { get; }
 
-        public MainViewModel(IRecepients RecepientsData)
+        public MainViewModel(IRecepients RecepientsData, WindowManager windowManager)
         {
-            //Получаем данные о получателях
+            //Менеджер окон
+            WM = windowManager;
+            
+            //Заполняем коллекцию получателей из БД
             this.RecepientsData = RecepientsData;
 
             LoadRecepientsDataCommand = new RelayCommand(LoadRecepientsData);
@@ -41,7 +47,7 @@ namespace WPF_MailSender.ViewModel
 
             NewRecepientCommand = new RelayCommand(NewRecepient);
 
-            EditRecepientCommand = new RelayCommand<Recepient>(EditRecepient);
+            EditRecepientCommand = new RelayCommand(EditRecepient);
 
             #endregion
         }
@@ -67,6 +73,7 @@ namespace WPF_MailSender.ViewModel
             get { return _SelectedRecepient; }
             set
             {
+                RecepientsData.CurrentRecepient = SelectedRecepient;
                 Set(ref _SelectedRecepient, value);
             }
         }
@@ -78,6 +85,8 @@ namespace WPF_MailSender.ViewModel
         /// </summary>
         private void LoadRecepientsData()
         {
+            RecepientsList.Clear();
+
             foreach (var item in RecepientsData.GetAllRecepients())
             {
                 RecepientsList.Add(item);
@@ -89,7 +98,7 @@ namespace WPF_MailSender.ViewModel
         /// </summary>
         private void LoadSenders()
         {
-            foreach (var item in StaticVariables.SendersList)
+            foreach (var item in RecepientsData.Senders)
             {
                 SendersList.Add(item);
             }
@@ -97,13 +106,20 @@ namespace WPF_MailSender.ViewModel
 
         private void NewRecepient()
         {
-            StaticVariables.GetNewEditorWindow(StaticVariables.GetMainWindow, "Create New Recepient", EditorWindow.EditorWindowShowMode.CreateMode, new Recepient());
+
         }
 
-        private void EditRecepient(Recepient SelectedRecepient)
+        private void EditRecepient()
         {
-            if (SelectedRecepient == null) return;
-            StaticVariables.GetNewEditorWindow(StaticVariables.GetMainWindow, "Create New Recepient", EditorWindow.EditorWindowShowMode.EditMode, SelectedRecepient);
+            if (SelectedRecepient is null) return;
+            else
+            {
+                if(WM.EditRecepient(SelectedRecepient))
+                {
+                    RecepientsData.Edit(SelectedRecepient);
+                    LoadRecepientsData();
+                }
+            }
         }
     }
 }
