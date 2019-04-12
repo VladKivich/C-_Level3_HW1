@@ -14,14 +14,8 @@ namespace WPF_MailSender.Services
 
         public bool EditRecepient(Recepient recepient)
         {
-            View = new EditorWindowViewModel("Recipient Editor", "Edit", EditorWindowMode.Recepient);
-
-            View.SendRecepient(recepient);
-
-            EditorWindow = new EditorWindow { DataContext = View };
-
-            View.Closed += OnCLose;
-
+            CreateModelAndWindow("Recipient Editor", "Edit", EditorWindowMode.Recepient, recepient);
+            
             if (EditorWindow.ShowDialog() != true) return false;
 
             recepient.Email = EditorWindow.TextEmail.Text;
@@ -31,14 +25,8 @@ namespace WPF_MailSender.Services
 
         public bool NewRecepient(Recepient recepient)
         {
-            View = new EditorWindowViewModel("Recipient Creator", "Create", EditorWindowMode.Recepient);
-
-            View.SendRecepient(recepient);
-
-            EditorWindow = new EditorWindow { DataContext = View };
-
-            View.Closed += OnCLose;
-
+            CreateModelAndWindow("Recipient Creator", "Create", EditorWindowMode.Recepient, recepient);
+            
             if (EditorWindow.ShowDialog() != true) return false;
 
             recepient.Email = EditorWindow.TextEmail.Text;
@@ -51,6 +39,17 @@ namespace WPF_MailSender.Services
             View.Closed -= OnCLose;
             EditorWindow.DialogResult = Result;
             EditorWindow.Close();
+        }
+
+        private void CreateModelAndWindow(string Title, string Button, EditorWindowMode Mode, Recepient recepient)
+        {
+            View = new EditorWindowViewModel(Title, Button, EditorWindowMode.Recepient);
+
+            View.SendRecepient(recepient);
+
+            EditorWindow = new EditorWindow { DataContext = View };
+
+            View.Closed += OnCLose;
         }
     }
 }

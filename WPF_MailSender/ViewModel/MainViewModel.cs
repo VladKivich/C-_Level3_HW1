@@ -28,8 +28,10 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand EditRecepientCommand { get; }
 
+        public ICommand DeleteRecepientCommand { get; }
+
         #endregion
-        
+
         public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager)
         {
             //Менеджер окон
@@ -47,11 +49,13 @@ namespace WPF_MailSender.ViewModel
 
             LoadSenders();
 
-            #region Команды создание\редактирования получателей\отправителей.
+            #region Команды создание\редактирования\удаление получателей\отправителей.
 
             NewRecepientCommand = new RelayCommand(NewRecepient);
 
             EditRecepientCommand = new RelayCommand(EditRecepient);
+
+            DeleteRecepientCommand = new RelayCommand(DeleteRecepient);
 
             #endregion
         }
@@ -77,7 +81,6 @@ namespace WPF_MailSender.ViewModel
             get { return _SelectedRecepient; }
             set
             {
-                CorrespondentsData.CurrentRecepient = SelectedRecepient;
                 Set(ref _SelectedRecepient, value);
             }
         }
@@ -136,6 +139,16 @@ namespace WPF_MailSender.ViewModel
                     LoadCorrespondentsData();
                 }
             }
+        }
+
+        /// <summary>
+        /// Удаление выбранного получателя.
+        /// </summary>
+        private void DeleteRecepient()
+        {
+            if (SelectedRecepient is null) return;
+            CorrespondentsData.Delete(SelectedRecepient);
+            LoadCorrespondentsData();
         }
     }
 }

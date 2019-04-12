@@ -90,29 +90,14 @@ namespace WPF_MailSender.Services
             Context.SubmitChanges();
         }
 
-        public Recepient CurrentRecepient
+        public void Delete(Recepient recepient)
         {
-            get
-            {
-                return _CurrentRecepient;
-            }
-            set
-            {
-                _CurrentRecepient = value;
-            }
-        }
+            var db_recepient = Context.Recepient.FirstOrDefault(r => r.Id == recepient.ID);
+            if (db_recepient == null) return;
 
-        public Sender CurrentSender
-        {
-            get
-            {
-                return _CurrentSender;
-            }
-            set
-            {
-                _CurrentSender = value;
-            }
+            Context.Recepient.DeleteOnSubmit(db_recepient);
+
+            Context.SubmitChanges();
         }
-        
     }
 }

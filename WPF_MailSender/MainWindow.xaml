@@ -87,7 +87,7 @@
                     <Button Command="{Binding NewRecepientCommand}" Name='NewRecepient' Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="NewRecepient_Click">
                         <Image Source="Img/New.png"></Image>
                     </Button>
-                    <Button Name="DeleteRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteRecepient_Click">
+                    <Button Command="{Binding DeleteRecepientCommand}" Name="DeleteRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteRecepient_Click">
                         <Image Source="Img/delete.png"></Image>
                     </Button>
                     <Button Name ="EditRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Click="EditRecepient_Click"
