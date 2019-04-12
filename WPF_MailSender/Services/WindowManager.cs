@@ -29,6 +29,23 @@ namespace WPF_MailSender.Services
             return true;
         }
 
+        public bool NewRecepient(Recepient recepient)
+        {
+            View = new EditorWindowViewModel("Recipient Creator", "Create", EditorWindowMode.Recepient);
+
+            View.SendRecepient(recepient);
+
+            EditorWindow = new EditorWindow { DataContext = View };
+
+            View.Closed += OnCLose;
+
+            if (EditorWindow.ShowDialog() != true) return false;
+
+            recepient.Email = EditorWindow.TextEmail.Text;
+
+            return true;
+        }
+
         public void OnCLose(object sender, bool Result)
         {
             View.Closed -= OnCLose;

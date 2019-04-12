@@ -32,7 +32,7 @@ namespace WPF_MailSender.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<IRecepients, CorrespondentsData>();
+            SimpleIoc.Default.Register<ICorrespondents, CorrespondentsData>();
             SimpleIoc.Default.Register(() => new MailSenderDBDataContext());
             SimpleIoc.Default.Register<EditorWindowViewModel>();
             SimpleIoc.Default.Register<WindowManager>();

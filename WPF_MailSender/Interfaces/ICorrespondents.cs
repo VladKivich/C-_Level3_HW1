@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace WPF_MailSender.Interfaces
 {
-    public interface IRecepients
+    public interface ICorrespondents
     {
         IEnumerable<Recepient> GetAllRecepients();
 
         Recepient GotRecepientById(int id);
 
         void Edit(Recepient recepient);
+
+        void AddNew(string email);
 
         Recepient CurrentRecepient { get; set; }
 

@@ -16,9 +16,11 @@ namespace WPF_MailSender.ViewModel
 
         private WindowManager WM;
 
-        private readonly IRecepients RecepientsData;
+        private readonly ICorrespondents CorrespondentsData;
 
-        public ICommand LoadRecepientsDataCommand { get; }
+        #region Команды
+
+        public ICommand LoadCorrespondentsDataCommand { get; }
 
         public ICommand LoadSendersDataCommand { get; }
 
@@ -26,17 +28,19 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand EditRecepientCommand { get; }
 
-        public MainViewModel(IRecepients RecepientsData, WindowManager windowManager)
+        #endregion
+        
+        public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager)
         {
             //Менеджер окон
             WM = windowManager;
             
             //Заполняем коллекцию получателей из БД
-            this.RecepientsData = RecepientsData;
+            this.CorrespondentsData = CorrespondentsData;
 
-            LoadRecepientsDataCommand = new RelayCommand(LoadRecepientsData);
+            LoadCorrespondentsDataCommand = new RelayCommand(LoadCorrespondentsData);
 
-            LoadRecepientsData();
+            LoadCorrespondentsData();
 
             //Получаем данные об отправителях
             LoadSendersDataCommand = new RelayCommand(LoadSenders);
@@ -73,7 +77,7 @@ namespace WPF_MailSender.ViewModel
             get { return _SelectedRecepient; }
             set
             {
-                RecepientsData.CurrentRecepient = SelectedRecepient;
+                CorrespondentsData.CurrentRecepient = SelectedRecepient;
                 Set(ref _SelectedRecepient, value);
             }
         }
@@ -83,11 +87,11 @@ namespace WPF_MailSender.ViewModel
         /// <summary>
         /// Загружаем данные из БД в коллекцию получателей
         /// </summary>
-        private void LoadRecepientsData()
+        private void LoadCorrespondentsData()
         {
             RecepientsList.Clear();
 
-            foreach (var item in RecepientsData.GetAllRecepients())
+            foreach (var item in CorrespondentsData.GetAllRecepients())
             {
                 RecepientsList.Add(item);
             }
@@ -98,17 +102,29 @@ namespace WPF_MailSender.ViewModel
         /// </summary>
         private void LoadSenders()
         {
-            foreach (var item in RecepientsData.Senders)
+            foreach (var item in CorrespondentsData.Senders)
             {
                 SendersList.Add(item);
             }
         }
 
+        /// <summary>
+        /// Создает нового получателя
+        /// </summary>
         private void NewRecepient()
         {
+            Recepient R = new Recepient();
 
+            if (WM.NewRecepient(R))
+            {
+                CorrespondentsData.AddNew(R.Email);
+                LoadCorrespondentsData();
+            }
         }
 
+        /// <summary>
+        /// Редактирует выбранного получателя
+        /// </summary>
         private void EditRecepient()
         {
             if (SelectedRecepient is null) return;
@@ -116,8 +132,8 @@ namespace WPF_MailSender.ViewModel
             {
                 if(WM.EditRecepient(SelectedRecepient))
                 {
-                    RecepientsData.Edit(SelectedRecepient);
-                    LoadRecepientsData();
+                    CorrespondentsData.Edit(SelectedRecepient);
+                    LoadCorrespondentsData();
                 }
             }
         }

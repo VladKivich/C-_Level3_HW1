@@ -79,7 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MailSenderDB.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IRecepients.cs" />
+    <Compile Include="Interfaces\ICorrespondents.cs" />
     <Compile Include="Models\EmailSendServiceClass.cs" />
     <Compile Include="Models\StaticVariables.cs" />
     <Compile Include="EditorWindow.xaml.cs">

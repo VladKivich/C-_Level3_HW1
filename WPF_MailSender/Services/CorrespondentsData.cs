@@ -10,7 +10,7 @@ using System.Net;
 
 namespace WPF_MailSender.Services
 {
-    public class CorrespondentsData : IRecepients
+    public class CorrespondentsData : ICorrespondents
     {
         public Recepient _CurrentRecepient;
 
