@@ -18,7 +18,7 @@ namespace WPF_MailSender.Services
 
         private MailSenderDBDataContext Context;
         
-        public ObservableCollection<Sender> Senders { get; }
+        public ObservableCollection<Sender> Senders { get; private set; }
 
         public CorrespondentsData(MailSenderDBDataContext Context)
         {
@@ -28,8 +28,21 @@ namespace WPF_MailSender.Services
             //Заполняем список отправителей
             Senders  = new ObservableCollection<Sender>()
             {
-                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new NetworkCredential("smasoda@yandex.ru", "123456qwert"))
+                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new NetworkCredential("smasoda@yandex.ru", "123456qwert"), SenderNumber())
             };
+        }
+
+        private int SenderNumber()
+        {
+            if(Senders is null)
+            {
+                return 1;
+            }
+            else
+            {
+                int numb = Senders.Count + 1;
+                return numb;
+            }
         }
 
         /// <summary>
@@ -78,7 +91,7 @@ namespace WPF_MailSender.Services
         /// Добавляем нового получателя в БД
         /// </summary>
         /// <param name="email">Адрес электронной почты получателя</param>
-        public void AddNew(string email)
+        public void AddNewRecepient(string email)
         {
             Data.Recepient R = new Data.Recepient
             {
@@ -90,6 +103,10 @@ namespace WPF_MailSender.Services
             Context.SubmitChanges();
         }
 
+        /// <summary>
+        /// Удаляет выбранного получателя.
+        /// </summary>
+        /// <param name="recepient">Удаляемый получатель</param>
         public void Delete(Recepient recepient)
         {
             var db_recepient = Context.Recepient.FirstOrDefault(r => r.Id == recepient.ID);
@@ -99,5 +116,41 @@ namespace WPF_MailSender.Services
 
             Context.SubmitChanges();
         }
+
+        /// <summary>
+        /// Удаляет выбранного отправителя.
+        /// </summary>
+        /// <param name="sender">Отправитель для удаления</param>
+        public void Delete(Sender sender)
+        {
+            var _sender = Senders.FirstOrDefault(s => s.Number == sender.Number);
+            if (_sender == null) return;
+
+            Senders.Remove(sender);
+        }
+
+
+        /// <summary>
+        /// Добавляет нового отправителя в коллекцию
+        /// </summary>
+        /// <param name="sender">Отправитель для добавления</param>
+        public void AddNewSender(Sender sender)
+        {
+            sender.Number = SenderNumber();
+            Senders.Add(sender);
+        }
+
+        /// <summary>
+        /// Редактирует выбранного отправителя.
+        /// </summary>
+        /// <param name="sender">Отправитель для редактирования</param>
+        public void Edit(Sender sender)
+        {
+            Sender _sender = Senders.FirstOrDefault(s => s.Number == sender.Number);
+            if (_sender == null) return;
+
+            _sender = sender;
+        }
+        
     }
 }

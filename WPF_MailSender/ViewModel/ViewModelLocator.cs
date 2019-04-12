@@ -14,13 +14,13 @@ namespace WPF_MailSender.ViewModel
     public class ViewModelLocator
     {
         /// <summary>
-        /// Initializes a new instance of the ViewModelLocator class.
+        /// Initializes a new instance of the ViewmodelLocator class.
         /// </summary>
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
+            ////if (ViewmodelBase.IsInDesignModeStatic)
             ////{
             ////    // Create design time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
@@ -44,7 +44,7 @@ namespace WPF_MailSender.ViewModel
 
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            // TODO Clear the Viewmodels
         }
     }
 }

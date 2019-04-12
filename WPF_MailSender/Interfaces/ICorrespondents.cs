@@ -15,10 +15,16 @@ namespace WPF_MailSender.Interfaces
 
         void Edit(Recepient recepient);
 
-        void AddNew(string email);
-
+        void AddNewRecepient(string email);
+        
         void Delete(Recepient recepient);
 
         ObservableCollection<Sender> Senders { get; }
+
+        void AddNewSender(Sender sender);
+
+        void Edit(Sender sender);
+
+        void Delete(Sender sender);
     }
 }

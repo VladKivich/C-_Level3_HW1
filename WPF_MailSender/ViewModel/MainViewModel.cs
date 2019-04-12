@@ -14,7 +14,7 @@ namespace WPF_MailSender.ViewModel
 
         public ObservableCollection<Sender> SendersList { get; } = new ObservableCollection<Sender>();
 
-        private WindowManager WM;
+        private WindowManager _WindowManager;
 
         private readonly ICorrespondents CorrespondentsData;
 
@@ -30,12 +30,18 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand DeleteRecepientCommand { get; }
 
+        public ICommand NewSenderCommand { get; }
+
+        public ICommand EditSenderCommand { get; }
+
+        public ICommand DeleteSenderCommand { get; }
+
         #endregion
 
         public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager)
         {
             //Менеджер окон
-            WM = windowManager;
+            _WindowManager = windowManager;
             
             //Заполняем коллекцию получателей из БД
             this.CorrespondentsData = CorrespondentsData;
@@ -56,6 +62,12 @@ namespace WPF_MailSender.ViewModel
             EditRecepientCommand = new RelayCommand(EditRecepient);
 
             DeleteRecepientCommand = new RelayCommand(DeleteRecepient);
+
+            NewSenderCommand = new RelayCommand(NewSender);
+
+            EditSenderCommand = new RelayCommand(EditSender);
+
+            DeleteSenderCommand = new RelayCommand(DeleteSender);
 
             #endregion
         }
@@ -86,7 +98,23 @@ namespace WPF_MailSender.ViewModel
         }
 
         #endregion
-        
+
+        #region Выбранный отправитель
+
+        private Sender _SelectedSender;
+
+        public Sender SelectedSender
+        {
+            get { return _SelectedSender; }
+
+            set
+            {
+                Set(ref _SelectedSender, value);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Загружаем данные из БД в коллекцию получателей
         /// </summary>
@@ -105,6 +133,8 @@ namespace WPF_MailSender.ViewModel
         /// </summary>
         private void LoadSenders()
         {
+            SendersList.Clear();
+
             foreach (var item in CorrespondentsData.Senders)
             {
                 SendersList.Add(item);
@@ -118,9 +148,9 @@ namespace WPF_MailSender.ViewModel
         {
             Recepient R = new Recepient();
 
-            if (WM.NewRecepient(R))
+            if (_WindowManager.NewRecepient(R))
             {
-                CorrespondentsData.AddNew(R.Email);
+                CorrespondentsData.AddNewRecepient(R.Email);
                 LoadCorrespondentsData();
             }
         }
@@ -133,7 +163,7 @@ namespace WPF_MailSender.ViewModel
             if (SelectedRecepient is null) return;
             else
             {
-                if(WM.EditRecepient(SelectedRecepient))
+                if(_WindowManager.EditRecepient(SelectedRecepient))
                 {
                     CorrespondentsData.Edit(SelectedRecepient);
                     LoadCorrespondentsData();
@@ -149,6 +179,46 @@ namespace WPF_MailSender.ViewModel
             if (SelectedRecepient is null) return;
             CorrespondentsData.Delete(SelectedRecepient);
             LoadCorrespondentsData();
+        }
+
+        /// <summary>
+        /// Редактирует выбранного отправителя.
+        /// </summary>
+        private void EditSender()
+        {
+            if (SelectedSender is null) return;
+            else
+            {
+                if (_WindowManager.EditSender(SelectedSender))
+                {
+                    CorrespondentsData.Edit(SelectedSender);
+                    LoadSenders();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Создает нового отправителя.
+        /// </summary>
+        private void NewSender()
+        {
+            Sender S = new Sender();
+
+            if (_WindowManager.EditSender(S))
+            {
+                CorrespondentsData.AddNewSender(S);
+                LoadSenders();
+            }
+        }
+
+        /// <summary>
+        /// Удаляет выбранного отправителя.
+        /// </summary>
+        private void DeleteSender()
+        {
+            if (SelectedSender is null) return;
+            CorrespondentsData.Delete(SelectedSender);
+            LoadSenders();
         }
     }
 }

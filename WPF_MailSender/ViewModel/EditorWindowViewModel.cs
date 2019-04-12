@@ -122,7 +122,7 @@ namespace WPF_MailSender.ViewModel
             Exit = new RelayCommand(ExitButton);
         }
 
-        public void SendRecepient(Recepient R)
+        public void GotRecepient(Recepient R)
         {
             if(R is null)
             {
@@ -132,7 +132,7 @@ namespace WPF_MailSender.ViewModel
             EmailAddress = R.Email;
         }
 
-        public void SendSender(Sender S)
+        public void GotSender(Sender S)
         {
             if (S is null)
             {

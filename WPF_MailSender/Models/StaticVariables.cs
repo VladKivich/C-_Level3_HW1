@@ -21,16 +21,18 @@ namespace WPF_MailSender
         public string Email { get; set; }
         public string Server { get; set; }
         public int Port { get; set; }
+        public int Number { get; set; }
 
         public NetworkCredential ID { get; private set; }
 
-        public Sender(string Name, string Email, string Server, int Port, NetworkCredential ID)
+        public Sender(string Name, string Email, string Server, int Port, NetworkCredential ID, int Number = 0)
         {
             this.Name = Name;
             this.Email = Email;
             this.Server = Server;
             this.Port = Port;
             this.ID = ID;
+            this.Number = Number;
         }
 
         public Sender()
@@ -38,8 +40,9 @@ namespace WPF_MailSender
             Name = "Unknown";
             Email = "Unknown";
             Server = "Unknown";
-            this.Port = 0;
-            this.ID = new NetworkCredential(Email, "password");
+            Port = 0;
+            ID = new NetworkCredential(Email, "password");
+            Number = 0;
         }
     }
 

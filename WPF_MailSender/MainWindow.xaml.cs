@@ -57,6 +57,8 @@ namespace WPF_MailSender
             return true;
         }
         
+        //Удалить!
+
         #region Watermarks
 
         private void WatermarkSubject_GotFocus(object sender, RoutedEventArgs e)
@@ -140,60 +142,6 @@ namespace WPF_MailSender
             {
                 RecepientsUser.Items.Remove(RecepientsUser.SelectedItems[i]);
             }
-        }
-
-        #endregion
-
-        #region New Sender\Recepient
-
-        private void NewSender_Click(object sender, RoutedEventArgs e)
-        {
-            //StaticVariables.GetNewEditorWindow(this, SendersListBase, typeof(Sender), "Create New Sender");
-        }
-
-        private void NewRecepient_Click(object sender, RoutedEventArgs e)
-        {
-            //StaticVariables.GetNewEditorWindow(this, RecepientsList, typeof(Recepient), "Create New Recepient");
-        }
-
-        #endregion
-        
-        #region Edit Selected Sender\Recepient
-
-        private void EditSender_Click(object sender, RoutedEventArgs e)
-        {
-            if (SendersBase.SelectedItems.Count == 0)
-            {
-                StaticVariables.GetNewMessageWindow(this, "Select Error", "Please select Sender from Sender Selection List", Brushes.OrangeRed, Visibility.Visible).ShowDialog();
-                return;
-            }
-            //StaticVariables.GetNewEditorWindow(this, SendersListBase, SendersBase.SelectedItem as IEmail, "Edit Sender");
-        }
-
-        private void EditRecepient_Click(object sender, RoutedEventArgs e)
-        {
-            if (RecepientsBase.SelectedItems.Count == 0)
-            {
-                StaticVariables.GetNewMessageWindow(this, "Select Error", "Please select Recepient from Recepient Selection List", Brushes.OrangeRed, Visibility.Visible).ShowDialog();
-                return;
-            }
-            //StaticVariables.GetNewEditorWindow(this, RecepientsList, RecepientsBase.SelectedItem as IEmail, "Edit Sender");
-        }
-
-        #endregion
-
-        #region Delete Sender\Recepient
-
-        private void DeleteSender_Click(object sender, RoutedEventArgs e)
-        {
-            //if (SendersBase.SelectedItems.Count == 0) return;
-            //SendersListBase.Remove((Sender)SendersBase.SelectedItem);
-        }
-
-        private void DeleteRecepient_Click(object sender, RoutedEventArgs e)
-        {
-            //if (RecepientsBase.SelectedItems.Count == 0) return;
-            //RecepientsList.Remove((Recepient)RecepientsBase.SelectedItem);
         }
 
         #endregion

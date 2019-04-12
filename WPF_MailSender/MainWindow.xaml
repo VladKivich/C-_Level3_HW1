@@ -35,7 +35,7 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Sender Selection" FontSize="15" Height="30" Width="120" HorizontalContentAlignment="Center"/>
                     <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Recipient Selection" FontSize="15" Height="30" Width="134"  HorizontalContentAlignment="Center"/>
-                    <ListView SelectedIndex="0" SelectionMode="Single" Name="SendersBase" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="370" Height="100" Margin="0,50,5,0" ItemsSource="{Binding SendersList}">
+                    <ListView SelectedIndex="0" SelectionMode="Single" Name="SendersBase" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="370" Height="100" Margin="0,50,5,0" ItemsSource="{Binding SendersList}" SelectedItem="{Binding SelectedSender}">
                         <ListView.View>
                             <GridView AllowsColumnReorder="False">
                                 <GridViewColumn  DisplayMemberBinding="{Binding Path=Name}" Width="75">Name</GridViewColumn>
@@ -71,27 +71,27 @@
 
                     <Button Name="RecipientAdd" Grid.Column="1" Grid.Row="0" Content="→" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="RecipientAdd_Click" Margin="170,110,184,156" FontFamily="Times New Roman" FontWeight="Bold"/>
 
-                    <Button Name="NewSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Click="NewSender_Click" Grid.ColumnSpan="2" 
-                            Command="{Binding }">
+                    <Button Name="NewSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Grid.ColumnSpan="2" 
+                            Command="{Binding NewSenderCommand}">
                         <Image Source="Img/New.png"></Image>
                     </Button>
 
-                    <Button Name="DeleteSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteSender_Click">
+                    <Button Command="{Binding DeleteSenderCommand}" Name="DeleteSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="Img/delete.png"></Image>
                     </Button>
 
-                    <Button Name="EditSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="EditSender_Click">
+                    <Button Command="{Binding EditSenderCommand}" Name="EditSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
                         <Image Source="Img/Edit.png"></Image>
                     </Button>
 
-                    <Button Command="{Binding NewRecepientCommand}" Name='NewRecepient' Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="NewRecepient_Click">
+                    <Button Command="{Binding NewRecepientCommand}" Name='NewRecepient' Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0">
                         <Image Source="Img/New.png"></Image>
                     </Button>
-                    <Button Command="{Binding DeleteRecepientCommand}" Name="DeleteRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteRecepient_Click">
+                    <Button Command="{Binding DeleteRecepientCommand}" Name="DeleteRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="Img/delete.png"></Image>
                     </Button>
-                    <Button Name ="EditRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Click="EditRecepient_Click"
-                            Command="{Binding EditRecepientCommand}">
+                    <Button Name ="EditRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0"
+                        Command="{Binding EditRecepientCommand}">
                         <Image Source="Img/Edit.png"></Image>
                     </Button>
                 </Grid>
