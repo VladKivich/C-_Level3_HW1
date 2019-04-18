@@ -56,8 +56,6 @@ namespace WPF_MailSender
             }
             return true;
         }
-        
-        //Удалить!
 
         #region Watermarks
 
@@ -93,56 +91,6 @@ namespace WPF_MailSender
             }
         }
 
-
-        #endregion
-
-        #region Add\Remove Senders
-
-        private void SendersAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (SendersBase.SelectedItems.Count == 0) return;
-            foreach (var item in SendersBase.SelectedItems)
-            {
-                if (!SendersUser.Items.Contains(item))
-                {
-                    SendersUser.Items.Add(item);
-                }
-            }
-        }
-
-        private void SendersRemove_Click(object sender, RoutedEventArgs e)
-        {
-            if (SendersUser.SelectedItems.Count == 0) return;
-            for (int i = SendersUser.SelectedItems.Count - 1; i > -1; i--)
-            {
-                SendersUser.Items.Remove(SendersUser.SelectedItems[i]);
-            }
-        }
-
-        #endregion
-
-        #region Add\Remove Recepients
-
-        private void RecipientAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (RecepientsBase.SelectedItems.Count == 0) return;
-            foreach (var item in RecepientsBase.SelectedItems)
-            {
-                if (!RecepientsUser.Items.Contains(item))
-                {
-                    RecepientsUser.Items.Add(item);
-                }
-            }
-        }
-
-        private void RecipientRemove_Click(object sender, RoutedEventArgs e)
-        {
-            if (RecepientsUser.SelectedItems.Count == 0) return;
-            for (int i = RecepientsUser.SelectedItems.Count-1; i > -1; i--)
-            {
-                RecepientsUser.Items.Remove(RecepientsUser.SelectedItems[i]);
-            }
-        }
 
         #endregion
     }

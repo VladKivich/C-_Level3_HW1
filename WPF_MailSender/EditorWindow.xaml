@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_MailSender"
         xmlns:vm="clr-namespace:WPF_MailSender.ViewModel"
+        
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:EditorWindowMode}"

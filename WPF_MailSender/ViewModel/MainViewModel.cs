@@ -14,15 +14,19 @@ namespace WPF_MailSender.ViewModel
 
         public ObservableCollection<Sender> SendersList { get; } = new ObservableCollection<Sender>();
 
+        public ObservableCollection<Recepient> UserRecepientsList { get; } = new ObservableCollection<Recepient>();
+
+        public ObservableCollection<Sender> UserSendersList { get; } = new ObservableCollection<Sender>();
+
         private WindowManager _WindowManager;
 
         private readonly ICorrespondents CorrespondentsData;
 
         #region Команды
-
         public ICommand LoadCorrespondentsDataCommand { get; }
 
         public ICommand LoadSendersDataCommand { get; }
+
 
         public ICommand NewRecepientCommand { get; }
 
@@ -36,6 +40,14 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand DeleteSenderCommand { get; }
 
+
+        public ICommand AddToSendersList { get; }
+
+        public ICommand RemoveFromSendersList { get; }
+
+        public ICommand AddToRecepientsList { get; }
+
+        public ICommand RemoveFromRecepientsList { get; }
         #endregion
 
         public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager)
@@ -70,6 +82,48 @@ namespace WPF_MailSender.ViewModel
             DeleteSenderCommand = new RelayCommand(DeleteSender);
 
             #endregion
+
+            #region Команды Добавления\Удаления Отправителя\Получателей в список.
+
+            AddToSendersList = new RelayCommand(AddSenderToUserList);
+
+            RemoveFromSendersList = new RelayCommand(ClearUserSendersList);
+
+            AddToRecepientsList = new RelayCommand(AddRecepientToUserList);
+
+            RemoveFromRecepientsList = new RelayCommand(RemoveRecepientFromUserList);
+
+            #endregion
+        }
+        
+        private void AddSenderToUserList()
+        {
+            if (SelectedSender != null & UserSendersList.Count == 0)
+            {
+                UserSendersList.Add(SelectedSender);
+            }
+        }
+
+        private void ClearUserSendersList()
+        {
+            UserSendersList.Clear();
+        }
+
+        private void AddRecepientToUserList()
+        {
+            if (SelectedRecepient != null & !UserRecepientsList.Contains(SelectedRecepient))
+            {
+                UserRecepientsList.Add(SelectedRecepient);
+            }
+        }
+
+        private void RemoveRecepientFromUserList()
+        {
+            if (_SelectedUserRecepient is null) return;
+            else
+            {
+                UserRecepientsList.Remove(_SelectedUserRecepient);
+            }
         }
 
         #region Заголовок главного окна
@@ -94,6 +148,17 @@ namespace WPF_MailSender.ViewModel
             set
             {
                 Set(ref _SelectedRecepient, value);
+            }
+        }
+
+        private Recepient _SelectedUserRecepient;
+
+        public Recepient SelectedUserRecepient
+        {
+            get { return _SelectedUserRecepient; }
+            set
+            {
+                Set(ref _SelectedUserRecepient, value);
             }
         }
 
@@ -204,7 +269,7 @@ namespace WPF_MailSender.ViewModel
         {
             Sender S = new Sender();
 
-            if (_WindowManager.EditSender(S))
+            if (_WindowManager.NewSender(S))
             {
                 CorrespondentsData.AddNewSender(S);
                 LoadSenders();

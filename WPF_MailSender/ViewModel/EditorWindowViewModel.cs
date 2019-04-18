@@ -134,10 +134,10 @@ namespace WPF_MailSender.ViewModel
 
         public void GotSender(Sender S)
         {
-            if (S is null)
-            {
-                S = new Sender();
-            }
+            //if (S is null)
+            //{
+            //    S = new Sender();
+            //}
 
             Name = S.Name;
             EmailAddress = S.Email;

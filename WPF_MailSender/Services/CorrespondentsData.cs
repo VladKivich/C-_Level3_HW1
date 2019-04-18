@@ -12,9 +12,9 @@ namespace WPF_MailSender.Services
 {
     public class CorrespondentsData : ICorrespondents
     {
-        public Recepient _CurrentRecepient;
+        //public Recepient _CurrentRecepient;
 
-        public Sender _CurrentSender;
+        //public Sender _CurrentSender;
 
         private MailSenderDBDataContext Context;
         
@@ -28,7 +28,8 @@ namespace WPF_MailSender.Services
             //Заполняем список отправителей
             Senders  = new ObservableCollection<Sender>()
             {
-                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new NetworkCredential("smasoda@yandex.ru", "123456qwert"), SenderNumber())
+                new Sender("A", "smasoda@yandex.ru", "smtp.yandex.ru", 25, new NetworkCredential("smasoda@yandex.ru", "123456qwert"), SenderNumber()),
+                new Sender("B", "smasoda@yandex.ru", "smtp.yandex.ru", 55, new NetworkCredential("smasoda@yandex.ru", "123456qwert"), SenderNumber())
             };
         }
 

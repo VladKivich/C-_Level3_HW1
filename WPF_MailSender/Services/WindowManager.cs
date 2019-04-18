@@ -16,6 +16,8 @@ namespace WPF_MailSender.Services
         {
             CreateModelAndWindow("Recipient Editor", "Edit", EditorWindowMode.Recepient);
 
+            EditorWindow.TextEmail.Focus();
+
             View.GotRecepient(recepient);
 
             if (EditorWindow.ShowDialog() != true) return false;
@@ -28,7 +30,11 @@ namespace WPF_MailSender.Services
         public bool NewRecepient(Recepient recepient)
         {
             CreateModelAndWindow("Recipient Creator", "Create", EditorWindowMode.Recepient);
-            
+
+            EditorWindow.TextEmail.Focus();
+
+            View.GotRecepient(recepient);
+
             if (EditorWindow.ShowDialog() != true) return false;
 
             recepient.Email = EditorWindow.TextEmail.Text;
@@ -39,6 +45,8 @@ namespace WPF_MailSender.Services
         public bool EditSender(Sender sender)
         {
             CreateModelAndWindow("Sender Editor", "Edit", EditorWindowMode.Sender);
+
+            EditorWindow.TextName.Focus();
 
             View.GotSender(sender);
 
@@ -57,6 +65,10 @@ namespace WPF_MailSender.Services
         public bool NewSender(Sender sender)
         {
             CreateModelAndWindow("Sender Creator", "Create", EditorWindowMode.Sender);
+
+            EditorWindow.TextName.Focus();
+
+            View.GotSender(sender);
 
             if (EditorWindow.ShowDialog() != true) return false;
 

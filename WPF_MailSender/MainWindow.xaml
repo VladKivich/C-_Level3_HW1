@@ -7,6 +7,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="WPF_MailSender.MainWindow"
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:Linq2SQL="clr-namespace:WPF_MailSender.Data"
+        xmlns:Buttons="clr-namespace:WPF_MailSender.Components"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800" ResizeMode="NoResize">
@@ -45,7 +46,9 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView Name="SendersUser" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Multiple" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Height="100" Margin="5,0,5,0">
+                    <ListView Name="SendersUser" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Multiple" Grid.Column="0" 
+                              Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Height="100" Margin="5,0,5,0" 
+                              ItemsSource="{Binding UserSendersList, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="75">Name</GridViewColumn>
@@ -55,45 +58,45 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox ItemsSource="{Binding RecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsBase" Grid.Column="1" Grid.Row="0" Width="150" Height="245" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,50,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedRecepient}"></ListBox>
-                    
-                    <ListBox Name="RecepientsUser" Grid.Column="1" Grid.Row="0" Width="150" Height="245" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,20,0"></ListBox>
+                    <ListBox ItemsSource="{Binding RecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsBase" Grid.Column="1" Grid.Row="0" Width="150" Height="245" 
+                             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,50,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedRecepient}"></ListBox>
 
-                    <Button Name="SendersRemove" Background="IndianRed" Grid.Column="0" Grid.Row="0" Margin="74,163,274,111" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SendersRemove_Click" IsTabStop="False">
+                    <ListBox ItemsSource="{Binding UserRecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsUser" Grid.Column="1" Grid.Row="0" Width="150" Height="245" 
+                             HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,20,0" SelectedItem="{Binding SelectedUserRecepient}"></ListBox>
+
+                    <Button Name="SendersRemove" Background="IndianRed" Grid.Column="0" Grid.Row="0" Margin="74,163,274,111" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                            IsTabStop="False" Command="{Binding RemoveFromSendersList}">
                         <Image Source="Img/remove.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
 
-                    <Button Name="SendersAdd" Background="ForestGreen" Grid.Column="0" Grid.Row="0" Margin="274,163,74,111" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SendersAdd_Click">
+                    <Button Command="{Binding AddToSendersList}"  Name="SendersAdd" Background="ForestGreen" Grid.Column="0" Grid.Row="0" Margin="274,163,74,111" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <Image Source="Img/add.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
 
-                    <Button Name="RecipientRemove" Grid.Column="1" Grid.Row="0" Content="←" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="RecipientRemove_Click" Margin="170,206,184,60" FontFamily="Times New Roman" FontWeight="Bold"/>
+                    <Button Name="RecipientRemove" Grid.Column="1" Grid.Row="0" Content="←" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                            Command="{Binding RemoveFromRecepientsList}" Margin="170,206,184,60" FontFamily="Times New Roman" FontWeight="Bold"/>
 
-                    <Button Name="RecipientAdd" Grid.Column="1" Grid.Row="0" Content="→" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="RecipientAdd_Click" Margin="170,110,184,156" FontFamily="Times New Roman" FontWeight="Bold"/>
+                    <Button Name="RecipientAdd" Grid.Column="1" Grid.Row="0" Content="→" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                            Command="{Binding AddToRecepientsList}" Margin="170,110,184,156" FontFamily="Times New Roman" FontWeight="Bold"/>
 
-                    <Button Name="NewSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Grid.ColumnSpan="2" 
-                            Command="{Binding NewSenderCommand}">
-                        <Image Source="Img/New.png"></Image>
-                    </Button>
-
-                    <Button Command="{Binding DeleteSenderCommand}" Name="DeleteSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="Img/delete.png"></Image>
-                    </Button>
-
-                    <Button Command="{Binding EditSenderCommand}" Name="EditSender" Grid.Column="0" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
-                        <Image Source="Img/Edit.png"></Image>
-                    </Button>
-
-                    <Button Command="{Binding NewRecepientCommand}" Name='NewRecepient' Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0">
-                        <Image Source="Img/New.png"></Image>
-                    </Button>
-                    <Button Command="{Binding DeleteRecepientCommand}" Name="DeleteRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="Img/delete.png"></Image>
-                    </Button>
-                    <Button Name ="EditRecepient" Grid.Column="1" Grid.Row="1" Height="30" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0"
-                        Command="{Binding EditRecepientCommand}">
-                        <Image Source="Img/Edit.png"></Image>
-                    </Button>
+                    <Buttons:ButtonsControl Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" CreateCommand="{Binding NewSenderCommand}" DeleteCommand="{Binding DeleteSenderCommand}" EditCommand="{Binding EditSenderCommand}">
+                        <Buttons:ButtonsControl.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source = "MessageTheme.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Buttons:ButtonsControl.Resources>
+                    </Buttons:ButtonsControl>
+                    <Buttons:ButtonsControl Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" CreateCommand="{Binding NewRecepientCommand}" DeleteCommand="{Binding DeleteRecepientCommand}" EditCommand="{Binding EditRecepientCommand}">
+                        <Buttons:ButtonsControl.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source = "MessageTheme.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Buttons:ButtonsControl.Resources>
+                    </Buttons:ButtonsControl>
                 </Grid>
             </TabItem>
             <TabItem Header="Message">
@@ -137,7 +140,6 @@
                             <ListBoxItem>Task_3</ListBoxItem>
                         </ListBox>
                     </GroupBox>
-
                 </Grid>
             </TabItem>
         </TabControl>
