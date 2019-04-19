@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace WPF_MailSender.ViewModel
         Recepient
     }
 
-    public class EditorWindowViewModel: ViewModelBase
+    public class EditorWindowViewModel: ViewModelBase, IDataErrorInfo
     {
         #region Заголовок окна редактора
 
@@ -53,6 +54,35 @@ namespace WPF_MailSender.ViewModel
 
         #region Поля\Свойства
 
+        string IDataErrorInfo.Error => "";
+
+        string IDataErrorInfo.this[string PropertyName]
+        {
+            get
+            {
+                switch (PropertyName)
+                {
+                    case nameof(EmailAddress):
+                        if (!EmailAddress.Contains("@") | EmailAddress.Length < 4) return "Неверно указан адрес электронной почты";
+                        break;
+
+                    case "SMTP":
+                        if (!SMTP.Contains("@") & !SMTP.Contains(".")) return "Неверно указан адрес сервера";
+                        if(SMTP.Length < 4) return "Неверно указан адрес сервера";
+                        break;
+
+                    case "Name":
+                        if (Name is null) return "Введите имя";
+                        break;
+
+                    case "Port":
+                        if (Port <= 0) return "Неверно указан адрес порта";
+                        break;
+                }
+                return "";
+            }
+        }
+        
         private string _Name;
 
         public virtual string Name
@@ -120,6 +150,18 @@ namespace WPF_MailSender.ViewModel
             SaveChanges = new RelayCommand(ChangeButton);
 
             Exit = new RelayCommand(ExitButton);
+
+            #region Заглушка
+
+            Sender S = new Sender();
+            Name = S.Name;
+            EmailAddress = S.Email;
+            SMTP = S.Server;
+            Port = S.Port;
+            Password = S.ID.Password;
+
+            #endregion
+
         }
 
         public void GotRecepient(Recepient R)
@@ -134,16 +176,7 @@ namespace WPF_MailSender.ViewModel
 
         public void GotSender(Sender S)
         {
-            //if (S is null)
-            //{
-            //    S = new Sender();
-            //}
-
-            Name = S.Name;
-            EmailAddress = S.Email;
-            SMTP = S.Server;
-            Port = S.Port;
-            Password = S.ID.Password;
+            
         }
 
         private void ChangeButton()

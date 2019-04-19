@@ -17,5 +17,16 @@ namespace WPF_MailSender
         {
             InitializeComponent();
         }
+
+        private void OnValidationError(object Sender, ValidationErrorEventArgs e)
+        {
+            if (!(e.Source is Control)) return;
+
+            if (e.Action == ValidationErrorEventAction.Added)
+            {
+                Control control = e.Source as Control;
+                control.ToolTip = e.Error.ErrorContent.ToString();
+            }
+        }
     }
 }

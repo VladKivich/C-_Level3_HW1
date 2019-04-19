@@ -26,12 +26,16 @@
             <Label Name="EditorPort" HorizontalAlignment="Left" Content="Port" Width="50" Height="25" VerticalAlignment="Top" Margin="15,10"></Label>
             <Label x:Name="EditorPassword" HorizontalAlignment="Left" Content="Password" Width="60" Height="25" VerticalAlignment="Top" Margin="15,10,0,0"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
-            <TextBox Name="TextName" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Name}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
-            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" Text="{Binding EmailAddress}" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
-            <TextBox Name="TextSMTP" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding SMTP}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
-            <TextBox Name="TextPort" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Port}" Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,5"></TextBox>
-            <PasswordBox Name="TextPassword" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Width="150" BorderBrush="Red" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,7" />
+        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Validation.Error="OnValidationError">
+            <TextBox Name="TextName" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Name, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" 
+                     Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
+            <TextBox Name="TextEmail" HorizontalAlignment="Right" Width="150" BorderBrush="Black" Text="{Binding EmailAddress, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" 
+                     BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,10"></TextBox>
+            <TextBox Name="TextSMTP" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding SMTP, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" Width="150" BorderBrush="Black" 
+                     BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,15"></TextBox>
+            <TextBox Name="TextPort" HorizontalAlignment="Right" IsEnabled="{Binding AllFields}" Text="{Binding Port, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                     Width="150" BorderBrush="Black" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,5"></TextBox>
+            <PasswordBox Name="TextPassword" HorizontalAlignment="Right" IsEnabled="{Binding AllFields, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" Width="150" BorderBrush="Red" BorderThickness="3" Height="30" VerticalAlignment="Top" Margin="25,7" />
         </StackPanel>
         <Button Command="{Binding SaveChanges}" Content="{Binding ActionButtonContent}" Name="ActionButton" Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Left" Margin="20,10"  FontSize="18"/>
         <Button Command="{Binding Exit}" Grid.Column="1" Grid.Row="1" Height="40" Width="70" HorizontalAlignment="Right" Margin="20,10" Content="Exit" FontSize="18"/>

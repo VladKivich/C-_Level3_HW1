@@ -84,6 +84,8 @@
     </Compile>
     <Compile Include="Interfaces\ICorrespondents.cs" />
     <Compile Include="Models\EmailSendServiceClass.cs" />
+    <Compile Include="Models\Recepient.cs" />
+    <Compile Include="Models\Sender.cs" />
     <Compile Include="Models\StaticVariables.cs" />
     <Compile Include="EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
@@ -93,6 +95,7 @@
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\RegExValidationRule.cs" />
     <Compile Include="ViewModel\EditorWindowViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

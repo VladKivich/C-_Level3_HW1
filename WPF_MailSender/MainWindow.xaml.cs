@@ -91,7 +91,6 @@ namespace WPF_MailSender
             }
         }
 
-
         #endregion
     }
 }
