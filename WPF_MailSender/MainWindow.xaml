@@ -20,7 +20,7 @@
         <StatusBar DockPanel.Dock="Bottom">
             <ProgressBar x:Name="Progress"/>
         </StatusBar>
-        <TabControl>
+        <TabControl SelectedIndex="{Binding SelectedTab, UpdateSourceTrigger=PropertyChanged}">
             <TabItem Header="Senders/Recepients">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.Resources>
@@ -36,10 +36,20 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Sender Selection" FontSize="15" Height="30" Width="120" HorizontalContentAlignment="Center"/>
                     <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Recipient Selection" FontSize="15" Height="30" Width="134"  HorizontalContentAlignment="Center"/>
-                    <ListView SelectedIndex="0" SelectionMode="Single" Name="SendersBase" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="370" Height="100" Margin="0,50,5,0" ItemsSource="{Binding SendersList}" SelectedItem="{Binding SelectedSender}">
+                    <Button Command="{Binding CreateNewTask}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Create Task >>>" Margin="0,10,0,0">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source = "MessageTheme.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                    </Button>
+                    <ListView SelectionMode="Single" Name="SendersBase" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0" 
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Width="370" Height="100" Margin="0,50,5,0" ItemsSource="{Binding SendersList}" SelectedItem="{Binding SelectedSender}">
                         <ListView.View>
                             <GridView AllowsColumnReorder="False">
-                                <GridViewColumn  DisplayMemberBinding="{Binding Path=Name}" Width="75">Name</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="75">Name</GridViewColumn>
                                 <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="125">Email</GridViewColumn>
                                 <GridViewColumn DisplayMemberBinding="{Binding Path=Server}" Width="100">SMTP</GridViewColumn>
                                 <GridViewColumn DisplayMemberBinding="{Binding Path=Port}" Width="45">Port</GridViewColumn>
@@ -58,10 +68,10 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox ItemsSource="{Binding RecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsBase" Grid.Column="1" Grid.Row="0" Width="150" Height="245" 
+                    <ListBox ItemsSource="{Binding RecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsBase" Grid.Column="1" Grid.Row="0" Width="150" Height="256" 
                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,50,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedRecepient}"></ListBox>
 
-                    <ListBox ItemsSource="{Binding UserRecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsUser" Grid.Column="1" Grid.Row="0" Width="150" Height="245" 
+                    <ListBox ItemsSource="{Binding UserRecepientsList, UpdateSourceTrigger=PropertyChanged}" Name="RecepientsUser" Grid.Column="1" Grid.Row="0" Width="150" Height="256" 
                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,20,0" SelectedItem="{Binding SelectedUserRecepient}"></ListBox>
 
                     <Button Name="SendersRemove" Background="IndianRed" Grid.Column="0" Grid.Row="0" Margin="74,163,274,111" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
@@ -99,27 +109,38 @@
                     </Buttons:ButtonsControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="Message">
-                <DockPanel Width="790" Height="350" LastChildFill="false">
-                    <GroupBox DockPanel.Dock="Left" Width="200" Header="Message List">
-                        <ListBox>
-                            <ListBoxItem >Message_1</ListBoxItem>
-                            <ListBoxItem >Message_1</ListBoxItem>
-                            <ListBoxItem >Message_1</ListBoxItem>
-                            <ListBoxItem >Message_1</ListBoxItem>
-                        </ListBox>
+            <TabItem Header="Message" IsEnabled="{Binding MessageTabEnabled}">
+                <DockPanel Width="790" Height="350">
+                    <GroupBox DockPanel.Dock="Left" Width="200" Header="Messages List" Margin="0,0,0,0">
+                        <ListBox ItemsSource="{Binding EmailMessagesList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedEmailMessage}" DisplayMemberPath="Subject"></ListBox>
                     </GroupBox>
-                    <Grid DockPanel.Dock="Top">
-                        <Label Content="Your Message" VerticalAlignment="Top" Width="135" Height="34" FontSize="16" HorizontalContentAlignment="Center" Background="#00000000"/>
-                        <TextBox Name="MessageSubject" LostFocus="MessageSubject_LostFocus" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Margin="0,30,0,0"/>
-                        <TextBox Name="WatermarkSubject" Text="Email Subject" Foreground="Gray" GotFocus="WatermarkSubject_GotFocus" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" IsReadOnly="True" Margin="0,30,0,0"/>
-
-                        <TextBox Name="MessageBody" LostFocus="MessageBody_LostFocus" HorizontalAlignment="Center" Height="151" Margin="0,100,0,50" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
-                        <TextBox Name="WatermarkBody" Text="Email Text" Foreground="Gray" GotFocus="WatermarkBody_GotFocus" HorizontalAlignment="Center" Height="151" Margin="0,100,0,50" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="305"/>
+                    <Grid DockPanel.Dock="Right">
+                        <Label Content="Your Message" VerticalAlignment="Top" Width="135" Height="35" FontSize="16" HorizontalContentAlignment="Center" Background="#00000000"/>
+                        <TextBox Name="MessageSubject" Text="{Binding SelectedEmailMessage.Subject}" HorizontalAlignment="Right" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="310" Margin="0,39,105,0"/>
+                        <TextBox Name="MessageBody" Text="{Binding SelectedEmailMessage.Text}" HorizontalAlignment="Right" Height="200" Width="400" 
+                                 Margin="0,100,15,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top"/>
+                        <Buttons:ButtonsControl HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="5,0,10,-15">
+                            <Buttons:ButtonsControl.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source = "MessageTheme.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Buttons:ButtonsControl.Resources>
+                        </Buttons:ButtonsControl>
+                        <Button Content="Select Message >>>" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,39,0,0">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source = "MessageTheme.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                        </Button>
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Scheduler">
+            <TabItem Header="Scheduler" IsEnabled="{Binding SchedulerTabEnabled}">
                 <Grid Height="350" Width="790" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25*"></ColumnDefinition>
@@ -134,12 +155,14 @@
                         <Button Content="Add Scheduler Task" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10" Width="120" Click="Button_Click"/>
                     </StackPanel>
                     <GroupBox Grid.Column="1" Margin="0,0,5,5" Header="Scheduler Tasks">
-                        <ListBox Margin="0,10,0,0">
+                        <ListBox Margin="0,10,0,196">
                             <ListBoxItem>Task_1</ListBoxItem>
                             <ListBoxItem>Task_2</ListBoxItem>
                             <ListBoxItem>Task_3</ListBoxItem>
                         </ListBox>
                     </GroupBox>
+                    <Label Grid.Column="1" Content="Selected Task" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,15"></Label>
+                    <TextBox Grid.Column="1" VerticalAlignment="Bottom" Height="160" Margin="5,0,10,0"/>
                 </Grid>
             </TabItem>
         </TabControl>

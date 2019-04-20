@@ -56,41 +56,6 @@ namespace WPF_MailSender
             }
             return true;
         }
-
-        #region Watermarks
-
-        private void WatermarkSubject_GotFocus(object sender, RoutedEventArgs e)
-        {
-            WatermarkSubject.Visibility = Visibility.Hidden;
-            MessageSubject.Visibility = Visibility.Visible;
-            MessageSubject.Focus();
-        }
-
-        private void MessageSubject_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (String.IsNullOrEmpty(MessageSubject.Text))
-            {
-                MessageSubject.Visibility = Visibility.Collapsed;
-                WatermarkSubject.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void WatermarkBody_GotFocus(object sender, RoutedEventArgs e)
-        {
-            WatermarkBody.Visibility = Visibility.Hidden;
-            MessageBody.Visibility = Visibility.Visible;
-            MessageBody.Focus();
-        }
-
-        private void MessageBody_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (String.IsNullOrEmpty(MessageBody.Text))
-            {
-                MessageBody.Visibility = Visibility.Collapsed;
-                WatermarkBody.Visibility = Visibility.Visible;
-            }
-        }
-
-        #endregion
+        
     }
 }

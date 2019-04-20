@@ -83,19 +83,24 @@
       <DependentUpon>MailSenderDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICorrespondents.cs" />
+    <Compile Include="Interfaces\IMessages.cs" />
+    <Compile Include="Models\EmailMessage.cs" />
     <Compile Include="Models\EmailSendServiceClass.cs" />
     <Compile Include="Models\Recepient.cs" />
     <Compile Include="Models\Sender.cs" />
+    <Compile Include="Models\SenderTask.cs" />
     <Compile Include="Models\StaticVariables.cs" />
     <Compile Include="EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\TaskTime.cs" />
     <Compile Include="Services\CorrespondentsData.cs" />
+    <Compile Include="Services\EmailsDataService.cs" />
     <Compile Include="Services\WindowManager.cs" />
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Validation\RegExValidationRule.cs" />
+    <Compile Include="Validation\ValidationsRule.cs" />
     <Compile Include="ViewModel\EditorWindowViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -179,9 +184,11 @@
   <ItemGroup>
     <Resource Include="Img\New.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\add-rule.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

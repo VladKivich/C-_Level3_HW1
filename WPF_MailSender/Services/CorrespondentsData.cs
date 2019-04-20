@@ -7,19 +7,16 @@ using WPF_MailSender.Interfaces;
 using WPF_MailSender.Data;
 using System.Collections.ObjectModel;
 using System.Net;
+using WPF_MailSender.Models;
 
 namespace WPF_MailSender.Services
 {
     public class CorrespondentsData : ICorrespondents
     {
-        //public Recepient _CurrentRecepient;
-
-        //public Sender _CurrentSender;
-
         private MailSenderDBDataContext Context;
         
         public ObservableCollection<Sender> Senders { get; private set; }
-
+        
         public CorrespondentsData(MailSenderDBDataContext Context)
         {
             //Получаем контекст БД получателей

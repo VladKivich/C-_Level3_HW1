@@ -13,6 +13,6 @@ namespace WPF_MailSender
     /// </summary>
     public partial class App : Application
     {
-
+        int i = 4;
     }
 }

@@ -1,15 +1,25 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Windows.Input;
 using WPF_MailSender.Interfaces;
+using WPF_MailSender.Models;
 using WPF_MailSender.Services;
 
 namespace WPF_MailSender.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+
+        private enum TabOrder
+        {
+            SendersAndRecepients = 0,
+            Message = 1,
+            Scheduler = 2
+        }
+
         public ObservableCollection<Recepient> RecepientsList { get; } = new ObservableCollection<Recepient>();
 
         public ObservableCollection<Sender> SendersList { get; } = new ObservableCollection<Sender>();
@@ -18,15 +28,23 @@ namespace WPF_MailSender.ViewModel
 
         public ObservableCollection<Sender> UserSendersList { get; } = new ObservableCollection<Sender>();
 
+        public ObservableCollection<EmailMessage> EmailMessagesList { get; } = new ObservableCollection<EmailMessage>();
+
         private WindowManager _WindowManager;
 
         private readonly ICorrespondents CorrespondentsData;
 
         #region Команды
+
+        #region Команды "загрузки" данных
+
         public ICommand LoadCorrespondentsDataCommand { get; }
 
         public ICommand LoadSendersDataCommand { get; }
 
+        #endregion
+
+        #region Команды управления кнопками
 
         public ICommand NewRecepientCommand { get; }
 
@@ -40,7 +58,6 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand DeleteSenderCommand { get; }
 
-
         public ICommand AddToSendersList { get; }
 
         public ICommand RemoveFromSendersList { get; }
@@ -48,9 +65,16 @@ namespace WPF_MailSender.ViewModel
         public ICommand AddToRecepientsList { get; }
 
         public ICommand RemoveFromRecepientsList { get; }
+
+        public ICommand CreateNewTask { get; }
+
+        public ICommand NewScheduler { get; }
+
         #endregion
 
-        public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager)
+        #endregion
+
+        public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager, EmailsDataService EmailsService)
         {
             //Менеджер окон
             _WindowManager = windowManager;
@@ -58,11 +82,14 @@ namespace WPF_MailSender.ViewModel
             //Заполняем коллекцию получателей из БД
             this.CorrespondentsData = CorrespondentsData;
 
-            LoadCorrespondentsDataCommand = new RelayCommand(LoadCorrespondentsData);
+            //Получаем все сообщения.
+            LoadEmailMessages(EmailsService);
 
             LoadCorrespondentsData();
 
-            //Получаем данные об отправителях
+            //Получаем данные об отправителях и получателях
+            LoadCorrespondentsDataCommand = new RelayCommand(LoadCorrespondentsData);
+
             LoadSendersDataCommand = new RelayCommand(LoadSenders);
 
             LoadSenders();
@@ -94,8 +121,43 @@ namespace WPF_MailSender.ViewModel
             RemoveFromRecepientsList = new RelayCommand(RemoveRecepientFromUserList);
 
             #endregion
+
+            #region Команды отправки\Переключения между вкладками главного окна
+
+            CreateNewTask = new RelayCommand(NewTask);
+
+            NewScheduler = new RelayCommand(SchedulerTab);
+
+            #endregion
         }
-        
+
+        private void SchedulerTab()
+        {
+            if(SelectedEmailMessage != null)
+            {
+                //Переходим на вкладку планировщика
+                SelectedTab = (int)TabOrder.Scheduler;
+                SchedulerTabEnabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Переход на следующую вкладку
+        /// </summary>
+        private void NewTask()
+        {
+            if (UserRecepientsList.Count == 0 | UserSendersList.Count == 0) return;
+            else
+            {
+                //Переходим на вкладку редактора сообщений
+                SelectedTab = (int)TabOrder.Message;
+                MessageTabEnabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Добавляем отправителя в список пользователя
+        /// </summary>
         private void AddSenderToUserList()
         {
             if (SelectedSender != null & UserSendersList.Count == 0)
@@ -104,11 +166,20 @@ namespace WPF_MailSender.ViewModel
             }
         }
 
+        /// <summary>
+        /// Очистить список пользователей
+        /// </summary>
         private void ClearUserSendersList()
         {
             UserSendersList.Clear();
+
+            //Выключаем вкладки
+            MessageTabEnabled = false;
         }
 
+        /// <summary>
+        /// Добавить получателя в список пользователя
+        /// </summary>
         private void AddRecepientToUserList()
         {
             if (SelectedRecepient != null & !UserRecepientsList.Contains(SelectedRecepient))
@@ -117,12 +188,20 @@ namespace WPF_MailSender.ViewModel
             }
         }
 
+        /// <summary>
+        /// Удалить получателя из списка
+        /// </summary>
         private void RemoveRecepientFromUserList()
         {
             if (_SelectedUserRecepient is null) return;
             else
             {
                 UserRecepientsList.Remove(_SelectedUserRecepient);
+                //Выключаем возможность редактирования вкладки с письмами при пустом списке получателей
+                if (UserRecepientsList.Count == 0)
+                {
+                    MessageTabEnabled = true;
+                }
             }
         }
 
@@ -180,6 +259,63 @@ namespace WPF_MailSender.ViewModel
 
         #endregion
 
+        #region Выбрайнное письмо
+
+        private EmailMessage _SelectedEmailMessage;
+
+        public EmailMessage SelectedEmailMessage
+        {
+            get { return _SelectedEmailMessage; }
+
+            set
+            {
+                Set(ref _SelectedEmailMessage, value);
+            }
+        }
+
+        #endregion
+
+        #region Управление вкладками
+
+        private int _SelectedTab = 0;
+
+        public int SelectedTab
+        {
+            get
+            {
+                return _SelectedTab;
+            }
+
+            set
+            {
+                Set(ref _SelectedTab, value);
+            }
+        }
+
+        
+
+        #endregion
+
+        #region Видимость вкладок
+
+        private bool _MessageTabEnabled = true;
+
+        public bool MessageTabEnabled
+        {
+            get => _MessageTabEnabled;
+            set
+            {
+                Set(ref _MessageTabEnabled, value);
+            }
+        }
+        
+
+        private bool _SchedulerTabEnabled = true;
+
+        public bool SchedulerTabEnabled { get => _SchedulerTabEnabled; set => Set(ref _SchedulerTabEnabled, value); }
+
+        #endregion
+
         /// <summary>
         /// Загружаем данные из БД в коллекцию получателей
         /// </summary>
@@ -190,6 +326,17 @@ namespace WPF_MailSender.ViewModel
             foreach (var item in CorrespondentsData.GetAllRecepients())
             {
                 RecepientsList.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Получаем все сообщения
+        /// </summary>
+        private void LoadEmailMessages(EmailsDataService EmailsService)
+        {
+            foreach (var Email in EmailsService.GetAll())
+            {
+                EmailMessagesList.Add(Email);
             }
         }
 

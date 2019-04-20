@@ -24,6 +24,7 @@ namespace WPF_MailSender.ViewModel
             SimpleIoc.Default.Register(() => new MailSenderDBDataContext());
             SimpleIoc.Default.Register<EditorWindowViewModel>();
             SimpleIoc.Default.Register<WindowManager>();
+            SimpleIoc.Default.Register<EmailsDataService>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

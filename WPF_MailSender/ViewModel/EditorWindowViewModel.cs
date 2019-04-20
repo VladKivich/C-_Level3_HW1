@@ -75,9 +75,9 @@ namespace WPF_MailSender.ViewModel
                         if (Name is null) return "Введите имя";
                         break;
 
-                    case "Port":
-                        if (Port <= 0) return "Неверно указан адрес порта";
-                        break;
+                    //case "Port":
+                    //    if (Port <= 0) return "Неверно указан адрес порта";
+                    //    break;
                 }
                 return "";
             }
