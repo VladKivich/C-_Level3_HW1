@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPF_MailSender.Models;
 
 namespace WPF_MailSender.Components
 {
@@ -45,6 +46,25 @@ namespace WPF_MailSender.Components
         {
             get => (ICommand)GetValue(EditCommandProperty);
             set => SetValue(EditCommandProperty, value);
+        }
+
+        #endregion
+
+        #region EditCommandParametr : ICommand - Команда редактирования выбранного элемента
+
+        /// <summary>Команда редактирования выбранного элемента</summary>
+        public static readonly DependencyProperty EditCommandParametrProperty =
+            DependencyProperty.Register(
+                nameof(EditCommandParametr),
+                typeof(EmailMessage),
+                typeof(ButtonsControl),
+                new PropertyMetadata(default(ICommand)));
+
+        /// <summary>Команда редактирования выбранного элемента</summary>
+        public EmailMessage EditCommandParametr
+        {
+            get => (EmailMessage)GetValue(EditCommandParametrProperty);
+            set => SetValue(EditCommandParametrProperty, value);
         }
 
         #endregion

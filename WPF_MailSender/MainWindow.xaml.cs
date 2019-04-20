@@ -20,6 +20,7 @@ namespace WPF_MailSender
             InitializeComponent();
         }
 
+        //TODO: Перенести логику в модель представление
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (SendersUser.HasItems & RecepientsUser.HasItems)

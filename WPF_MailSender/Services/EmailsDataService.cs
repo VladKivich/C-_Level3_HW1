@@ -14,10 +14,8 @@ namespace WPF_MailSender.Services
         
         public EmailsDataService()
         {
-            EmailsList = new List<EmailMessage>()
-            {
-                new EmailMessage("Congratulations!", "You have received an email.")
-            };
+            EmailsList = new List<EmailMessage>();
+            Add(new EmailMessage("Congratulations!", "You have received an email."));
         }
 
         public List<EmailMessage> GetAll() => EmailsList;

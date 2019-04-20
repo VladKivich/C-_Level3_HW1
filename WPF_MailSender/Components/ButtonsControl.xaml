@@ -8,7 +8,7 @@
     <DockPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=locals:ButtonsControl}}">
         <UniformGrid Rows="1" Margin="5,0,5,0">
 
-            <Button Command="{Binding CreateCommand}" Name="NewSender" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Button Command="{Binding CreateCommand}" CommandParameter="{Binding EditCommandParametr, UpdateSourceTrigger=PropertyChanged}" Name="NewSender" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <Image Source="/Img/add-rule.png"></Image>
             </Button>
 

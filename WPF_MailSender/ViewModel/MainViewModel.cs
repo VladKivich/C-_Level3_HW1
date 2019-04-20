@@ -34,6 +34,8 @@ namespace WPF_MailSender.ViewModel
 
         private readonly ICorrespondents CorrespondentsData;
 
+        private readonly IMessages EmailsData;
+
         #region Команды
 
         #region Команды "загрузки" данных
@@ -44,7 +46,7 @@ namespace WPF_MailSender.ViewModel
 
         #endregion
 
-        #region Команды управления кнопками
+        #region Команды управления кнопками вкладки Senders/Recepients
 
         public ICommand NewRecepientCommand { get; }
 
@@ -68,22 +70,35 @@ namespace WPF_MailSender.ViewModel
 
         public ICommand CreateNewTask { get; }
 
+        #endregion
+
+        #region Команды управления кнопками вкладки Messages
+
         public ICommand NewScheduler { get; }
 
+        public ICommand NewMessage { get; }
+
+        public ICommand DeleteMessage { get; }
+
         #endregion
+
 
         #endregion
 
         public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager, EmailsDataService EmailsService)
         {
+            #region Получаем и загружаем данные
+
             //Менеджер окон
             _WindowManager = windowManager;
-            
+
             //Заполняем коллекцию получателей из БД
             this.CorrespondentsData = CorrespondentsData;
 
             //Получаем все сообщения.
-            LoadEmailMessages(EmailsService);
+            EmailsData = EmailsService;
+
+            LoadEmailMessages();
 
             LoadCorrespondentsData();
 
@@ -93,6 +108,8 @@ namespace WPF_MailSender.ViewModel
             LoadSendersDataCommand = new RelayCommand(LoadSenders);
 
             LoadSenders();
+
+            #endregion
 
             #region Команды создание\редактирования\удаление получателей\отправителей.
 
@@ -129,8 +146,42 @@ namespace WPF_MailSender.ViewModel
             NewScheduler = new RelayCommand(SchedulerTab);
 
             #endregion
+
+            #region Команды вкладки редактора писем
+
+            NewMessage = new RelayCommand(CreateNewMessage);
+
+            DeleteMessage = new RelayCommand<EmailMessage>(OnDeleteMessage);
+
+            #endregion
+        }
+        
+        /// <summary>
+        /// Удаляем выбранное сообщение
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnDeleteMessage(EmailMessage message)
+        {
+            if (message is null) return;
+            {
+                EmailsData.Remove(message.ID);
+                LoadEmailMessages();
+            }
         }
 
+        /// <summary>
+        /// Создаем новое сообщение
+        /// </summary>
+        private void CreateNewMessage()
+        {
+            EmailsData.Add(new EmailMessage());
+            LoadEmailMessages();
+            SelectedEmailMessage = EmailsData.GetById(EmailsData.GetAll().Count);
+        }
+
+        /// <summary>
+        /// Переход на вкладку планировщика
+        /// </summary>
         private void SchedulerTab()
         {
             if(SelectedEmailMessage != null)
@@ -291,14 +342,12 @@ namespace WPF_MailSender.ViewModel
                 Set(ref _SelectedTab, value);
             }
         }
-
         
-
         #endregion
 
         #region Видимость вкладок
 
-        private bool _MessageTabEnabled = true;
+        private bool _MessageTabEnabled = false;
 
         public bool MessageTabEnabled
         {
@@ -310,12 +359,12 @@ namespace WPF_MailSender.ViewModel
         }
         
 
-        private bool _SchedulerTabEnabled = true;
+        private bool _SchedulerTabEnabled = false;
 
         public bool SchedulerTabEnabled { get => _SchedulerTabEnabled; set => Set(ref _SchedulerTabEnabled, value); }
 
         #endregion
-
+        
         /// <summary>
         /// Загружаем данные из БД в коллекцию получателей
         /// </summary>
@@ -332,9 +381,11 @@ namespace WPF_MailSender.ViewModel
         /// <summary>
         /// Получаем все сообщения
         /// </summary>
-        private void LoadEmailMessages(EmailsDataService EmailsService)
+        private void LoadEmailMessages()
         {
-            foreach (var Email in EmailsService.GetAll())
+            EmailMessagesList.Clear();
+
+            foreach (var Email in EmailsData.GetAll())
             {
                 EmailMessagesList.Add(Email);
             }
