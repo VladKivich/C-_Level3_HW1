@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPF_MailSender.ViewModel;
+using System.Windows;
+using System.Windows.Media;
 
 namespace WPF_MailSender.Services
 {
@@ -11,14 +13,19 @@ namespace WPF_MailSender.Services
     {
         EditorWindow EditorWindow;
         EditorWindowViewModel View;
+        private Window MainOwner;
+
+        public WindowManager()
+        {
+            Application Main = App.Current;
+            MainOwner = Main.MainWindow;
+        }
 
         public bool EditRecepient(Recepient recepient)
         {
             CreateModelAndWindow("Recipient Editor", "Edit", EditorWindowMode.Recepient);
 
             EditorWindow.TextEmail.Focus();
-
-            View.GotRecepient(recepient);
 
             if (EditorWindow.ShowDialog() != true) return false;
 
@@ -33,8 +40,6 @@ namespace WPF_MailSender.Services
 
             EditorWindow.TextEmail.Focus();
 
-            View.GotRecepient(recepient);
-
             if (EditorWindow.ShowDialog() != true) return false;
 
             recepient.Email = EditorWindow.TextEmail.Text;
@@ -47,8 +52,6 @@ namespace WPF_MailSender.Services
             CreateModelAndWindow("Sender Editor", "Edit", EditorWindowMode.Sender);
 
             EditorWindow.TextName.Focus();
-
-            View.GotSender(sender);
 
             if (EditorWindow.ShowDialog() != true) return false;
 
@@ -68,8 +71,6 @@ namespace WPF_MailSender.Services
 
             EditorWindow.TextName.Focus();
 
-            View.GotSender(sender);
-
             if (EditorWindow.ShowDialog() != true) return false;
 
             sender.Name = EditorWindow.TextName.Text;
@@ -84,6 +85,12 @@ namespace WPF_MailSender.Services
 
         private void OnCLose(object sender, bool Result)
         {
+            if (EditorWindow.HasErrors() == true & Result)
+            {
+                StaticVariables.GetNewMessageWindow(EditorWindow, "Input Error", "PLease input correct data", Brushes.DarkRed, Visibility.Hidden).ShowDialog();
+                return;
+            }
+
             View.Closed -= OnCLose;
             EditorWindow.DialogResult = Result;
             EditorWindow.Close();
@@ -93,7 +100,7 @@ namespace WPF_MailSender.Services
         {
             View = new EditorWindowViewModel(Title, Button, Mode);
             
-            EditorWindow = new EditorWindow { DataContext = View };
+            EditorWindow = new EditorWindow(MainOwner) { DataContext = View };
 
             View.Closed += OnCLose;
         }

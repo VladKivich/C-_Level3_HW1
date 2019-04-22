@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,8 +14,9 @@ namespace WPF_MailSender
     /// </summary>
     public partial class EditorWindow : Window
     {
-        public EditorWindow()
+        public EditorWindow(Window Owner)
         {
+            this.Owner = Owner;
             InitializeComponent();
         }
 
@@ -27,6 +29,15 @@ namespace WPF_MailSender
                 Control control = e.Source as Control;
                 control.ToolTip = e.Error.ErrorContent.ToString();
             }
+        }
+
+        public bool HasErrors()
+        {
+            foreach (DependencyObject item in StackPanel.Children)
+            {
+                if (Validation.GetHasError(item)) return true;
+            }
+            return false;
         }
     }
 }

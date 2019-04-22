@@ -12,7 +12,6 @@ namespace WPF_MailSender.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-
         private enum TabOrder
         {
             SendersAndRecepients = 0,
@@ -81,8 +80,7 @@ namespace WPF_MailSender.ViewModel
         public ICommand DeleteMessage { get; }
 
         #endregion
-
-
+        
         #endregion
 
         public MainViewModel(ICorrespondents CorrespondentsData, WindowManager windowManager, EmailsDataService EmailsService)
@@ -251,7 +249,7 @@ namespace WPF_MailSender.ViewModel
                 //¬ыключаем возможность редактировани€ вкладки с письмами при пустом списке получателей
                 if (UserRecepientsList.Count == 0)
                 {
-                    MessageTabEnabled = true;
+                    MessageTabEnabled = false;
                 }
             }
         }

@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:WPF_MailSender"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
-          <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:WPF_MailSender.ViewModel"/>
+            <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary>
+                <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:WPF_MailSender.ViewModel"/>
+            </ResourceDictionary>
+          </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
   </Application.Resources>
 </Application>

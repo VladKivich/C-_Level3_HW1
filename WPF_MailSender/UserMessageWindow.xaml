@@ -8,7 +8,7 @@
         Title="UserMessageWindow" Height="200" Width="300" ResizeMode="NoResize">
     <Grid>
         <Button Content="OK" HorizontalAlignment="Left" Margin="45,120,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="30"/>
-        <TextBox x:Name="UserMessage" HorizontalAlignment="Left" Height="85" Margin="10,10,0,0" TextWrapping="Wrap" AcceptsReturn="true" VerticalAlignment="Top" Width="270" BorderThickness="0" IsReadOnly="True" TextAlignment="Justify" FontSize="16"/>
+        <TextBox x:Name="UserMessage" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" Height="85" Margin="10,10,0,0" TextWrapping="Wrap" AcceptsReturn="true" VerticalAlignment="Top" Width="270" BorderThickness="0" IsReadOnly="True" TextAlignment="Justify" FontSize="17"/>
         <Button Name="CloseButton" Content="Exit" HorizontalAlignment="Right" Margin="0,120,45,0" VerticalAlignment="Top" Width="75" Height="30" Click="CloseButton_Click"/>
         <Grid.Resources>
             <ResourceDictionary>

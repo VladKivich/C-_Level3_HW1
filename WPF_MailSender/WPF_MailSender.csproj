@@ -85,7 +85,7 @@
     <Compile Include="Interfaces\ICorrespondents.cs" />
     <Compile Include="Interfaces\IMessages.cs" />
     <Compile Include="Models\EmailMessage.cs" />
-    <Compile Include="Models\EmailSendServiceClass.cs" />
+    <Compile Include="Services\EmailSendServiceClass.cs" />
     <Compile Include="Models\Recepient.cs" />
     <Compile Include="Models\Sender.cs" />
     <Compile Include="Models\SenderTask.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="UserMessageWindow.xaml.cs">
       <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Validation\ValidationsRule.cs" />
+    <Compile Include="RuleValidation\ValidationsRule.cs" />
     <Compile Include="ViewModel\EditorWindowViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

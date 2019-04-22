@@ -2,11 +2,13 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WPF_MailSender.Interfaces;
 
@@ -63,21 +65,37 @@ namespace WPF_MailSender.ViewModel
                 switch (PropertyName)
                 {
                     case nameof(EmailAddress):
-                        if (!EmailAddress.Contains("@") | EmailAddress.Length < 4) return "Неверно указан адрес электронной почты";
+                        if (!EmailAddress.Contains("@") | EmailAddress.Length < 4)
+                        {
+                            return "Неверно указан адрес электронной почты";
+                        }
                         break;
 
                     case "SMTP":
-                        if (!SMTP.Contains("@") & !SMTP.Contains(".")) return "Неверно указан адрес сервера";
-                        if(SMTP.Length < 4) return "Неверно указан адрес сервера";
+                        if (Mode == EditorWindowMode.Sender & !SMTP.Contains("@") & !SMTP.Contains("."))
+                        {
+                            return "Неверно указан адрес сервера";
+                        }
+
+                        if(SMTP.Length < 4)
+                        {
+                            return "Неверно указан адрес сервера";
+                        }
                         break;
 
                     case "Name":
-                        if (Name is null) return "Введите имя";
+                        if (Mode == EditorWindowMode.Sender & Name is null)
+                        {
+                            return "Введите имя";
+                        }
                         break;
 
-                    //case "Port":
-                    //    if (Port <= 0) return "Неверно указан адрес порта";
-                    //    break;
+                    case "Port":
+                        if(Mode == EditorWindowMode.Sender & !PortCheck(Port))
+                        {
+                            return "Неверно указан порт!";
+                        }
+                        break;
                 }
                 return "";
             }
@@ -161,22 +179,11 @@ namespace WPF_MailSender.ViewModel
             Password = S.ID.Password;
 
             #endregion
-
         }
 
-        public void GotRecepient(Recepient R)
+        private bool PortCheck(int Port)
         {
-            if(R is null)
-            {
-                R = new Recepient();
-            }
-
-            EmailAddress = R.Email;
-        }
-
-        public void GotSender(Sender S)
-        {
-            
+            return Port <= 0 ? false : true;
         }
 
         private void ChangeButton()

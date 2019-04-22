@@ -15,9 +15,9 @@ namespace WPF_MailSender
 {
     static class StaticVariables
     {
-        public static UserMessageWindow GetNewMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility Exit = Visibility.Visible)
+        public static UserMessageWindow GetNewMessageWindow(Window Owner, string MessageTitle, string MessageText, SolidColorBrush Brush, Visibility Exit = Visibility.Visible)
         {
-            return UserMessageWindow.GetMessageWindow(Owner, EmailTitle, EmailText, Brush, Exit);
+            return UserMessageWindow.GetMessageWindow(Owner, MessageTitle, MessageText, Brush, Exit);
         }
     }
 }

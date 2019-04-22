@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace WPF_MailSender.Validation
+namespace WPF_MailSender.RuleValidation
 {
     class ValidationsRule : ValidationRule
     {
