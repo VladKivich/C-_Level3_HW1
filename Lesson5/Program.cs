@@ -43,7 +43,8 @@ namespace Lesson5
                 if (F.Number > 1)
                 {
                     F.Result *= --F.Number;
-                    ThreadPool.QueueUserWorkItem(FactorialMethod, factorial);
+                    FactorialMethod(F);
+                    return;
                 }
                 else
                 {
@@ -61,7 +62,8 @@ namespace Lesson5
                 if (F.Number > 0)
                 {
                     F.Result += --F.Number;
-                    ThreadPool.QueueUserWorkItem(AmountMethod, factorial);
+                    AmountMethod(F);
+                    return;
                 }
                 else
                 {
@@ -111,12 +113,15 @@ namespace Lesson5
 
             //а) факториал числа N, которое вводится с клавиатуры;
 
-            //FactorialMethod(new Factorial(NumberInput()));
+            Factorial F = new Factorial(NumberInput());
+            Factorial F1 = new Factorial(F.Number);
+
+            ThreadPool.QueueUserWorkItem(FactorialMethod, F);
 
             //b) сумму целых чисел до N;
 
-            //AmountMethod(new Factorial(NumberInput()));
-
+            ThreadPool.QueueUserWorkItem(AmountMethod, F1);
+            
             #endregion
 
             #region Задание_2
@@ -125,35 +130,35 @@ namespace Lesson5
             //сохраняющего его в обычный txt - файл.Все операции проходят в потоках. CSV - файл заведомо
             //имеет большой объем.
 
-            string path = @"Files\vacancy.csv";
+            //string path = @"Files\vacancy.csv";
 
-            List<string> SL = new List<string>();
+            //List<string> SL = new List<string>();
 
-            try
-            {
-                Console.WriteLine("Read File!");
-                using (StreamReader sr = new StreamReader(path))
-                {
-                    while(sr.ReadLine() != null)
-                    {
-                        SL.Add(sr.ReadLine());
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //try
+            //{
+            //    Console.WriteLine("Read File!");
+            //    using (StreamReader sr = new StreamReader(path))
+            //    {
+            //        while(sr.ReadLine() != null)
+            //        {
+            //            SL.Add(sr.ReadLine());
+            //        }
+            //    }
+            //}
+            //catch(Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
 
-            ParsingExample PE = new ParsingExample(SL, "Повар");
+            //ParsingExample PE = new ParsingExample(SL, "Повар");
 
-            for (int i = 0; i < 4; i++)
-            {
-                lock(PE)
-                {
-                    ThreadPool.QueueUserWorkItem(FindAndWrite, PE);
-                }
-            }
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    lock(PE)
+            //    {
+            //        ThreadPool.QueueUserWorkItem(FindAndWrite, PE);
+            //    }
+            //}
 
             #endregion
 
