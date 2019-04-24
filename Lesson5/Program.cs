@@ -10,6 +10,24 @@ namespace Lesson5
 {
     class Program
     {
+        public static class Results
+        {
+            public static Factorial F1 { get; set; }
+            public static Factorial F2 { get; set; }
+
+            public static void PrintResult()
+            {
+                if(F1 != null)
+                {
+                    Console.WriteLine(F1.Result);
+                }
+                if (F2 != null)
+                {
+                    Console.WriteLine(F2.Result);
+                }
+            }
+        }
+
         public class ParsingExample
         {
             public List<string> Strings { get; set; }
@@ -24,10 +42,10 @@ namespace Lesson5
 
         public class Factorial
         {
-            public int Number { get; set; }
-            public int Result { get; set; }
+            public ulong Number { get; set; }
+            public ulong Result { get; set; }
 
-            public Factorial(int Number)
+            public Factorial(ulong Number)
             {
                 this.Number = Number;
                 this.Result = Number;
@@ -48,7 +66,7 @@ namespace Lesson5
                 }
                 else
                 {
-                    Console.WriteLine("Факториал: {0}", F.Result);
+                    Results.F1 = F;
                 }
             }
         }
@@ -67,18 +85,18 @@ namespace Lesson5
                 }
                 else
                 {
-                    Console.WriteLine("Сумма целых чисел: {0}", F.Result);
+                    Results.F2 = F;
                 }
             }
         }
 
-        static int NumberInput()
+        static ulong NumberInput()
         {
-            int N = 0;
+            ulong N = 0;
             do
             {
                 Console.Write("Введите число: ");
-                Int32.TryParse(Console.ReadLine(), out N);
+                UInt64.TryParse(Console.ReadLine(), out N);
             }
             while (N <= 0);
             return N;
@@ -116,11 +134,18 @@ namespace Lesson5
             Factorial F = new Factorial(NumberInput());
             Factorial F1 = new Factorial(F.Number);
 
-            ThreadPool.QueueUserWorkItem(FactorialMethod, F);
+            Thread A = new Thread(FactorialMethod);
+            A.Start(F);
 
             //b) сумму целых чисел до N;
 
-            ThreadPool.QueueUserWorkItem(AmountMethod, F1);
+            Thread B = new Thread(AmountMethod);
+            B.Start(F1);
+
+            B.Join();
+            A.Join();
+
+            Results.PrintResult();
             
             #endregion
 
