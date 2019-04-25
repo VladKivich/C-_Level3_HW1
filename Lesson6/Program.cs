@@ -74,7 +74,7 @@ namespace Lesson6
             }
             else
             {
-                PrintMatrix(Multi(MatrixFirst, MatrixSecond));
+                Multi(MatrixFirst, MatrixSecond);
             }
         }
 
@@ -139,27 +139,17 @@ namespace Lesson6
             return Result;
         }
 
-        public static void Method(int B, int [] A)
-        {
-            if (B >= A.Length) return;
-            A[B] = 15;
-        }
-
         static void Main(string[] args)
         {
             #region Task_1
             //1. Даны 2 двумерных матрицы. Размерность 100х100 каждая. Напишите приложение, производящее параллельное умножение матриц. 
             //Матрицы заполняются случайными целыми числами от 0 до10.
 
-            //int[,] M1 = FillMatrix(100, 100);
+            int[,] M1 = FillMatrix(100, 100);
 
-            //int[,] M2 = FillMatrix(100, 100);
+            int[,] M2 = FillMatrix(100, 100);
 
-            //PrintMatrix(M1);
-
-            //PrintMatrix(M2);
-
-            //MultiMatrix(M1, M2);
+            MultiMatrix(M1, M2);
 
             #endregion
 
