@@ -129,24 +129,24 @@ namespace Lesson5
 
             #region Задание_1
 
-            //а) факториал числа N, которое вводится с клавиатуры;
+            ////а) факториал числа N, которое вводится с клавиатуры;
 
-            Factorial F = new Factorial(NumberInput());
-            Factorial F1 = new Factorial(F.Number);
+            //Factorial F = new Factorial(NumberInput());
+            //Factorial F1 = new Factorial(F.Number);
 
-            Thread A = new Thread(FactorialMethod);
-            A.Start(F);
+            //Thread A = new Thread(FactorialMethod);
+            //A.Start(F);
 
-            //b) сумму целых чисел до N;
+            ////b) сумму целых чисел до N;
 
-            Thread B = new Thread(AmountMethod);
-            B.Start(F1);
+            //Thread B = new Thread(AmountMethod);
+            //B.Start(F1);
 
-            B.Join();
-            A.Join();
+            //B.Join();
+            //A.Join();
 
-            Results.PrintResult();
-            
+            //Results.PrintResult();
+
             #endregion
 
             #region Задание_2
