@@ -31,7 +31,7 @@ namespace Lesson6
             {
                 for (int j = 0; j < Matrix.GetLength(1); j++)
                 {
-                    Thread.Sleep(1);
+                    //Thread.Sleep(1);
                     Rnd = new Random((int)DateTime.Now.Ticks);
                     Matrix[i, j] = Rnd.Next(1, 10);
                 }
@@ -74,34 +74,46 @@ namespace Lesson6
             }
             else
             {
-                PrintMatrix(Multi(MatrixFirst, MatrixSecond));
+               Multi(MatrixFirst, MatrixSecond);
             }
         }
 
+        /// <summary>
+        /// Умножает две матрицы и возвращает результат
+        /// </summary>
+        /// <param name="M1">Первая матрица</param>
+        /// <param name="M2">Вторая матрица</param>
+        /// <returns></returns>
         private static int[,] Multi(int[,] M1, int[,] M2)
         {
             int[,] Result = new int[M1.GetLength(0), M2.GetLength(1)];
 
             for (int i = 0; i < Result.GetLength(0); i++)
             {
-                List<int> IntList = new List<int>();
-                Parallel.For(0, Result.GetLength(1), number =>
+                List<int> IntList = new List<int>(500);
+
+                ParallelLoopResult ParallelResult = Parallel.For(0, Result.GetLength(1), number =>
                 {
                     IntList.Add(MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, number, Matrix.Column)));
                 }
                 );
-                for (int j = 0; j < Result.GetLength(1); j++)
+
+                if (ParallelResult.IsCompleted & IntList.Count == 500)
                 {
-                    //Result[i, j] = Task.Factory.StartNew(() => MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column))).Result;
-
-                    Result[i, j] = IntList[j];
+                    for (int j = 0; j < Result.GetLength(1); j++)
+                    {
+                        Result[i, j] = IntList[j];
+                    }
+                    IntList.Clear();
                 }
-                IntList.Clear();
+
+                //for (int j = 0; j < Result.GetLength(1); j++)
+                //{
+                //    Result[i, j] = MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column));
+                //}
+
             }
-            
-
             return Result;
-
         }
         
 
@@ -145,7 +157,6 @@ namespace Lesson6
             {
                 Result += (String[i] * Column[i]);
             }
-
             return Result;
         }
 
@@ -155,13 +166,19 @@ namespace Lesson6
             //1. Даны 2 двумерных матрицы. Размерность 100х100 каждая. Напишите приложение, производящее параллельное умножение матриц. 
             //Матрицы заполняются случайными целыми числами от 0 до10.
 
-            int[,] M1 = FillMatrix(5, 3);
+            DateTime Start = DateTime.Now;
 
-            int[,] M2 = FillMatrix(3, 6);
+            int[,] M1 = FillMatrix(500, 500);
 
-            PrintMatrix(M1); PrintMatrix(M2);
+            int[,] M2 = FillMatrix(500, 500);
+
+            //PrintMatrix(M1); PrintMatrix(M2);
 
             MultiMatrix(M1, M2);
+
+            TimeSpan Result = DateTime.Now - Start;
+
+            Console.WriteLine($"Seconds: {Result.TotalSeconds}");
 
             #endregion
 
