@@ -74,7 +74,7 @@ namespace Lesson6
             }
             else
             {
-                Multi(MatrixFirst, MatrixSecond);
+                PrintMatrix(Multi(MatrixFirst, MatrixSecond));
             }
         }
 
@@ -84,16 +84,26 @@ namespace Lesson6
 
             for (int i = 0; i < Result.GetLength(0); i++)
             {
+                List<int> IntList = new List<int>();
+                Parallel.For(0, Result.GetLength(1), number =>
+                {
+                    IntList.Add(MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, number, Matrix.Column)));
+                }
+                );
                 for (int j = 0; j < Result.GetLength(1); j++)
                 {
-                    //Result[i, j] = MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column));
-                    Result[i, j] = Task.Factory.StartNew(() => MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column))).Result;
+                    //Result[i, j] = Task.Factory.StartNew(() => MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column))).Result;
+
+                    Result[i, j] = IntList[j];
                 }
+                IntList.Clear();
             }
+            
 
             return Result;
 
         }
+        
 
         /// <summary>
         /// Получаем нужный столбец или строку
@@ -145,9 +155,11 @@ namespace Lesson6
             //1. Даны 2 двумерных матрицы. Размерность 100х100 каждая. Напишите приложение, производящее параллельное умножение матриц. 
             //Матрицы заполняются случайными целыми числами от 0 до10.
 
-            int[,] M1 = FillMatrix(100, 100);
+            int[,] M1 = FillMatrix(5, 3);
 
-            int[,] M2 = FillMatrix(100, 100);
+            int[,] M2 = FillMatrix(3, 6);
+
+            PrintMatrix(M1); PrintMatrix(M2);
 
             MultiMatrix(M1, M2);
 
