@@ -31,7 +31,7 @@ namespace Lesson6
             {
                 for (int j = 0; j < Matrix.GetLength(1); j++)
                 {
-                    //Thread.Sleep(1);
+                    Thread.Sleep(18);
                     Rnd = new Random((int)DateTime.Now.Ticks);
                     Matrix[i, j] = Rnd.Next(1, 10);
                 }
@@ -74,7 +74,8 @@ namespace Lesson6
             }
             else
             {
-               Multi(MatrixFirst, MatrixSecond);
+               int[,] Result = Multi(MatrixFirst, MatrixSecond);
+               PrintMatrix(Result);
             }
         }
 
@@ -88,32 +89,52 @@ namespace Lesson6
         {
             int[,] Result = new int[M1.GetLength(0), M2.GetLength(1)];
 
-            for (int i = 0; i < Result.GetLength(0); i++)
+            Task[] Tasks = new Task[Result.GetLength(0)];
+
+            for (int i = 0; i <= Result.GetLength(0) - 1; i++)
             {
-                List<int> IntList = new List<int>(500);
+                Tasks[i] = Task.Factory.StartNew(() =>
+                   {
+                       int[] IntList = new int[Result.GetLength(1)];
 
-                ParallelLoopResult ParallelResult = Parallel.For(0, Result.GetLength(1), number =>
-                {
-                    IntList.Add(MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, number, Matrix.Column)));
-                }
+                       ParallelLoopResult ParallelResult = Parallel.For(0, Result.GetLength(1), number_j =>
+                       {
+                           IntList[number_j] = (MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, number_j, Matrix.Column)));
+                       }
+                       );
+
+                       for (int j = 0; j < Result.GetLength(1); j++)
+                       {
+                           Result[i, j] = IntList[j];
+                       }
+                       IntList = null;
+                   }
                 );
-
-                if (ParallelResult.IsCompleted & IntList.Count == 500)
-                {
-                    for (int j = 0; j < Result.GetLength(1); j++)
-                    {
-                        Result[i, j] = IntList[j];
-                    }
-                    IntList.Clear();
-                }
-
-                //for (int j = 0; j < Result.GetLength(1); j++)
-                //{
-                //    Result[i, j] = MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, j, Matrix.Column));
-                //}
-
             }
+
+            Task.WaitAny(Tasks);
+            
             return Result;
+
+
+            //for (int i = 0; i < Result.GetLength(0); i++)
+            //{
+            //    int[] IntList = new int[Result.GetLength(1)];
+
+            //    ParallelLoopResult ParallelResult = Parallel.For(0, Result.GetLength(1), number =>
+            //    {
+            //        IntList[number] = (MatrixCell(GetColumnOrString(M1, i, Matrix.String), GetColumnOrString(M2, number, Matrix.Column)));
+            //    }
+            //    );
+
+            //    for (int j = 0; j < Result.GetLength(1); j++)
+            //    {
+            //        Result[i, j] = IntList[j];
+            //    }
+            //    IntList = null;
+
+            //}
+            //return Result;
         }
         
 
@@ -168,11 +189,11 @@ namespace Lesson6
 
             DateTime Start = DateTime.Now;
 
-            int[,] M1 = FillMatrix(500, 500);
+            int[,] M1 = FillMatrix(2, 2);
 
-            int[,] M2 = FillMatrix(500, 500);
+            int[,] M2 = FillMatrix(2, 2);
 
-            //PrintMatrix(M1); PrintMatrix(M2);
+            PrintMatrix(M1); PrintMatrix(M2);
 
             MultiMatrix(M1, M2);
 
