@@ -16,9 +16,9 @@ namespace WPF_MailSender
 
         public MailMessage Message { get; private set; }
         
-        public EmailSendServiceClass(NetworkCredential ID)
+        public EmailSendServiceClass(NetworkCredential ID, string Host, int Port)
         {
-            SMTP = new SmtpClient(StaticVariables.Host, StaticVariables.Port);
+            SMTP = new SmtpClient(Host, Port);
             SMTP.Credentials = ID;
             SMTP.EnableSsl = true;
         }

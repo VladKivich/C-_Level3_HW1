@@ -19,7 +19,7 @@ namespace WPF_MailSender
     /// </summary>
     public partial class UserMessageWindow : Window
     {
-        private UserMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush)
+        private UserMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility ExitButton = Visibility.Visible)
         {
             InitializeComponent();
             this.Owner = Owner;
@@ -27,10 +27,12 @@ namespace WPF_MailSender
             Title = EmailTitle;
             UserMessage.Text = EmailText;
             UserMessage.Foreground = Brush;
+            CloseButton.Visibility = ExitButton;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Owner.Focus();
             Close();
         }
 
@@ -39,9 +41,9 @@ namespace WPF_MailSender
             Owner.Close();
         }
 
-        public static UserMessageWindow GetMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush)
+        public static UserMessageWindow GetMessageWindow(Window Owner, string EmailTitle, string EmailText, SolidColorBrush Brush, Visibility ExitButton = Visibility.Visible)
         {
-            return new UserMessageWindow(Owner, EmailTitle, EmailText, Brush);
+            return new UserMessageWindow(Owner, EmailTitle, EmailText, Brush, ExitButton);
         }
     }
 }

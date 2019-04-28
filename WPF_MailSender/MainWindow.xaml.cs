@@ -3,6 +3,10 @@ using System.Net;
 using System.Windows.Media;
 using System.Net.Mail;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections;
+using System.Security;
 
 namespace WPF_MailSender
 {
@@ -14,61 +18,45 @@ namespace WPF_MailSender
         public MainWindow()
         {
             InitializeComponent();
-            this.Title = "WpfMailSender";
         }
 
+        //TODO: Перенести логику в модель представление
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(EmptyFields(String.IsNullOrEmpty(UserNameTextBox.Text), String.IsNullOrEmpty(PasswordBoxEditor.Password)))
+            if (SendersUser.HasItems & RecepientsUser.HasItems)
             {
-                EmailSendServiceClass ESSC = new EmailSendServiceClass(new NetworkCredential(UserNameTextBox.Text, PasswordBoxEditor.SecurePassword));
+                if(EmptyFields(String.IsNullOrEmpty(MessageBody.Text), String.IsNullOrEmpty(MessageSubject.Text)))
+                {
+                    foreach (Sender S in SendersUser.Items)
+                    {
+                        foreach (Recepient R in RecepientsUser.Items)
+                        {
+                            EmailSendServiceClass ESSC = new EmailSendServiceClass(S.ID, S.Server, S.Port);
 
-                ESSC.SendMessage(StaticVariables.MailSender, StaticVariables.MailReceiver, MessageBody.Text, MessageSubject.Text, this);
+                            ESSC.SendMessage(S.Email, R.Email, MessageBody.Text, MessageSubject.Text, this);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                string Title = "No Sender/Recepient";
+                string Text = "Select sender and / or recipient";
+                StaticVariables.GetNewMessageWindow(this, Title, Text, Brushes.OrangeRed).ShowDialog();
             }
         }
-
-        private bool EmptyFields(bool User, bool Pass)
+        
+        private bool EmptyFields(bool Subject, bool Message)
         {
-            if(User | Pass)
+            if(Subject | Message)
             {
                 string Title = "Input Error";
-                string Text = "Fields Username and/or Password is empty. Enter your username and password";
+                string Text = "Your message is empty!";
                 StaticVariables.GetNewMessageWindow(this, Title, Text, Brushes.OrangeRed).ShowDialog();
                 return false;
             }
             return true;
         }
-
-        private void WatermarkSubject_GotFocus(object sender, RoutedEventArgs e)
-        {
-            WatermarkSubject.Visibility = Visibility.Hidden;
-            MessageSubject.Visibility = Visibility.Visible;
-            MessageSubject.Focus();
-        }
-
-        private void MessageSubject_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if(String.IsNullOrEmpty(MessageSubject.Text))
-            {
-                MessageSubject.Visibility = Visibility.Collapsed;
-                WatermarkSubject.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void WatermarkBody_GotFocus(object sender, RoutedEventArgs e)
-        {
-            WatermarkBody.Visibility = Visibility.Hidden;
-            MessageBody.Visibility = Visibility.Visible;
-            MessageBody.Focus();
-        }
-
-        private void MessageBody_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (String.IsNullOrEmpty(MessageBody.Text))
-            {
-                MessageBody.Visibility = Visibility.Collapsed;
-                WatermarkBody.Visibility = Visibility.Visible;
-            }
-        }
+        
     }
 }
